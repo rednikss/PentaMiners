@@ -1,14 +1,14 @@
-using App.Scripts.Libs.UI.View.Element.Base;
+using App.Scripts.Libs.UI.Core.View.Element.Base;
 using DG.Tweening;
 using UnityEngine;
 
-namespace App.Scripts.Libs.UI.View.Element.Scale
+namespace App.Scripts.Libs.UI.Core.View.Element.Scale
 {
     public class ScaleElementView : ElementView
     {
         [SerializeField] private Transform _transform;
         
-        public void Construct()
+        public override void Construct()
         {
             ShowTween = _transform.DOScale(1f, ShowConfig.Duration)
                 .SetEase(ShowConfig.Ease)

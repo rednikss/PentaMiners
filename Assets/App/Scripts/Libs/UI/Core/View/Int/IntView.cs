@@ -1,12 +1,12 @@
 ﻿using System.Text;
-using App.Scripts.Libs.UI.View.Config;
+using App.Scripts.Libs.UI.Core.View.Config;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
 using TMPro;
 using UnityEngine;
 
-namespace App.Scripts.Libs.UI.View.Int
+namespace App.Scripts.Libs.UI.Core.View.Int
 {
     public class IntView : MonoBehaviour
     {
@@ -49,7 +49,7 @@ namespace App.Scripts.Libs.UI.View.Int
                 .SetEase(tweenConfig.Ease)
                 .SetLink(gameObject);
 
-            return t.Play().AwaitForComplete();
+            return t.Play().ToUniTask();
         }
         
         public int GetValue() => _value;

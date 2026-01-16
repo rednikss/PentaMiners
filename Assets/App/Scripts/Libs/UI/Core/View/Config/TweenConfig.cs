@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace App.Scripts.Libs.UI.View.Config
+namespace App.Scripts.Libs.UI.Core.View.Config
 {
     [CreateAssetMenu(fileName = "Tween Config", menuName = "Config/View/Tween", order = 0)]
     public class TweenConfig : ScriptableObject

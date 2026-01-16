@@ -4,7 +4,7 @@ using App.Scripts.Libs.UI.Core.Panel.Controller;
 
 namespace App.Scripts.Libs.UI.Core.Container
 {
-    public class PanelContainer : IDisposable
+    public class PanelContainer : IPanelContainer
     {
         private readonly List<PanelController> _panels = new();
 

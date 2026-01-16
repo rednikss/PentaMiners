@@ -8,15 +8,18 @@ namespace App.Scripts.Libs.Infrastructure.Core.Context
     {
         public ServiceContainer Container { get; private set; }
         
-        [SerializeField] 
-        private MonoInstaller contextInstaller;
+        [SerializeField] private MonoInstaller[] contextInstallers;
 
         private static bool _initialized;
         
         private void Construct()
         {
             Container = new ServiceContainer();
-            contextInstaller.InstallBindings(Container);
+
+            foreach (var installer in contextInstallers)
+            {
+                installer.InstallBindings(Container);
+            }
         }
         
         public static ProjectContext Build()
@@ -32,5 +35,8 @@ namespace App.Scripts.Libs.Infrastructure.Core.Context
             
             return context;
         }
+        
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void Init() => _initialized = false;
     }
 }

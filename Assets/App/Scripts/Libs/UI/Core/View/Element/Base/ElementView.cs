@@ -1,9 +1,9 @@
-﻿using App.Scripts.Libs.UI.View.Config;
+﻿using App.Scripts.Libs.UI.Core.View.Config;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace App.Scripts.Libs.UI.View.Element.Base
+namespace App.Scripts.Libs.UI.Core.View.Element.Base
 {
     public abstract class ElementView : MonoBehaviour
     {
@@ -14,6 +14,8 @@ namespace App.Scripts.Libs.UI.View.Element.Base
         protected Tween ShowTween;
 
         protected Tween HideTween;
+
+        public abstract void Construct();
         
         public async UniTask ShowAnimated()
         {
@@ -21,14 +23,14 @@ namespace App.Scripts.Libs.UI.View.Element.Base
             
             HideTween.Rewind();
             ShowTween.Restart();
-            await ShowTween.AwaitForComplete();
+            await ShowTween.AsyncWaitForCompletion().AsUniTask();
         }
 
         public async UniTask HideAnimated()
         {
             ShowTween.Rewind();
             HideTween.Restart();
-            await HideTween.AwaitForComplete();
+            await HideTween.ToUniTask();
             
             Hide();
         }

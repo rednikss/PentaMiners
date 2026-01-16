@@ -1,8 +1,8 @@
 ﻿using System;
-using App.Scripts.Libs.UI.View.Element.Base;
+using App.Scripts.Libs.UI.Core.View.Element.Base;
 using UnityEngine;
 
-namespace App.Scripts.Libs.UI.View.Config
+namespace App.Scripts.Libs.UI.Core.View.Config
 {
     [Serializable]
     public class AnimatedView<T> where T : MonoBehaviour

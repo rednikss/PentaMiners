@@ -66,7 +66,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -131,7 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fdaec18fc2d497d8bcc45e126372e11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextInstaller: {fileID: 1103891726857134002}
+  contextInstallers:
+  - {fileID: 1103891726857134002}
+  - {fileID: 9107969630710535311}
 --- !u!1 &2845674000170018608
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,6 +301,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4162770106120396380}
+  - component: {fileID: 9107969630710535311}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -323,6 +326,20 @@ Transform:
   - {fileID: 4100913385171237561}
   m_Father: {fileID: 544783840467750818}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9107969630710535311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6068650658070356053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b354316e2e734a669d28b2fb8b033a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _builderConfig: {fileID: 11400000, guid: cb5c74883ef8fc447b94c993c210751d, type: 2}
+  _projectCanvas: {fileID: 4914926653725405642}
 --- !u!1 &7210859165542054112
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,8 +384,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e228ab2f6a42f3afc885a86f5dff0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectCanvas: {fileID: 4914926653725405642}
+  TargetFrameRate: 60
   defaultTickableHandler: {fileID: 1960661534224684134}
+  fixedTickableHandler: {fileID: 5108045690102263134}
 --- !u!1 &8905070553760247445
 GameObject:
   m_ObjectHideFlags: 0

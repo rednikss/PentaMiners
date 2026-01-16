@@ -1,5 +1,6 @@
 ﻿using System;
-using App.Scripts.Libs.UI.View.Element.Base;
+using App.Scripts.Libs.UI.Core.Panel.View;
+using App.Scripts.Libs.UI.Core.View.Element.Base;
 using Cysharp.Threading.Tasks;
 using Object = UnityEngine.Object;
 
@@ -7,20 +8,20 @@ namespace App.Scripts.Libs.UI.Core.Panel.Controller
 {
     public abstract class PanelController : IDisposable
     {
-        private readonly ElementView _panelView;
+        private readonly PanelView _panelView;
 
-        protected PanelController(ElementView panelView)
+        protected PanelController(PanelView panelView)
         {
             _panelView = panelView;
         }
 
-        public UniTask ShowAnimated() => _panelView.ShowAnimated();
+        public UniTask ShowAnimated() => _panelView.PanelElement.ShowAnimated();
 
-        public UniTask HideAnimated() => _panelView.HideAnimated();
+        public UniTask HideAnimated() => _panelView.PanelElement.HideAnimated();
 
-        public void Show() => _panelView.Show();
+        public void Show() => _panelView.PanelElement.Show();
 
-        public void Hide() => _panelView.Hide();
+        public void Hide() => _panelView.PanelElement.Hide();
 
         public void Destroy()
         {

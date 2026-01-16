@@ -11,6 +11,11 @@ namespace App.Scripts.Libs.Infrastructure.Core.EntryPoint
         
         private static ProjectContext _projectContext;
         
+        
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void Init() => _projectContext = null;
+        
+        
         private void Awake()
         {
             _projectContext ??= ProjectContext.Build();
@@ -24,5 +29,6 @@ namespace App.Scripts.Libs.Infrastructure.Core.EntryPoint
 
             container.GetService<ISceneStarter>().StartScene();
         }
+        
     }
 }

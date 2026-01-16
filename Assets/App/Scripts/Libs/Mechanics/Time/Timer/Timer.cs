@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using App.Scripts.Libs.Mechanics.Time.Tickable;
 
 namespace App.Scripts.Libs.Mechanics.Time.Timer
@@ -7,53 +8,51 @@ namespace App.Scripts.Libs.Mechanics.Time.Timer
     {
         private float _currentTime;
 
-        private readonly List<TimerEvent> _timerEvents = new();
+        private readonly Dictionary<TimerEventData, Action> _events = new();
 
         public void Tick(float deltaTime)
         {
             _currentTime += deltaTime;
 
-            for (var i = 0; i < _timerEvents.Count; i++)
+            foreach (var (key, value) in _events)
             {
-                EventCheck(_timerEvents[i]);
+                EventCheck(key, value);
             }
         }
 
-        public TimerEvent AddEvent(TimedEvent timedEvent, float delay)
+        public TimerEventData AddEvent(Action action, float delay, bool isLooping = false)
         {
-            var timerEvent = new TimerEvent(timedEvent, _currentTime + delay);
-            _timerEvents.Add(timerEvent);
+            var data = new TimerEventData(_currentTime + delay, isLooping);
+            _events.Add(data, action);
             
-            return timerEvent;
+            return data;
         }
 
-        public void CancelEvent(TimerEvent timerEvent)
+        public void CancelEvent(TimerEventData data)
         {
-            _timerEvents.Remove(timerEvent);
+            _events.Remove(data);
         }
 
-        private void EventCheck(TimerEvent timerEvent)
+        private void EventCheck(TimerEventData data, Action action)
         {
-            if (timerEvent.Time > _currentTime) return;
+            if (data.Time > _currentTime) return;
             
-            _timerEvents.Remove(timerEvent);
-            timerEvent.Event?.Invoke();
-        }
-        
-        public class TimerEvent
-        {
-            public readonly float Time;
+            if (!data.IsLooping) _events.Remove(data);
             
-            public readonly TimedEvent Event;
-
-            public TimerEvent(TimedEvent newEvent, float invokeTime)
-            {
-                Event = newEvent;
-                Time = invokeTime;
-            }
+            action?.Invoke();
         }
-        
-        public delegate void TimedEvent();
     }
     
+    public class TimerEventData
+    {
+        public readonly float Time;
+        
+        public readonly bool IsLooping;
+        
+        public TimerEventData(float invokeTime, bool isLooping = false)
+        {
+            Time = invokeTime;
+            IsLooping = isLooping;
+        }
+    }
 }
