@@ -1,7 +1,7 @@
-﻿using App.Scripts.Game.Panel.View;
+﻿using App.Scripts.Game.UI.View;
 using App.Scripts.Libs.UI.Core.Panel.Controller;
 
-namespace App.Scripts.Game.Panel.Controller
+namespace App.Scripts.Game.UI.Controller
 {
     public class GamePanelController : PanelController
     {

@@ -8,25 +8,26 @@ namespace App.Scripts.Game.Modules.Background
 
         private readonly Transform _backTransform;
 
-        private readonly Camera _camera;
-
-        public BackgroundAdapter(SpriteRenderer backSprite, Transform backTransform, Camera camera)
+        public BackgroundAdapter(SpriteRenderer backSprite, Transform backTransform)
         {
             _backSprite = backSprite;
             _backTransform = backTransform;
-            _camera = camera;
         }
 
-        public void SetSize(Vector2 size)
+        public void SetGridSize(Vector2 size)
         {
             _backSprite.size = size;
-            
-            var pos = _camera.ScreenToWorldPoint(Vector3.zero);
+        }
+
+        public void SetGridScale(float scale)
+        {
+            _backTransform.localScale = Vector3.one * scale;
+        }
+
+        public void SetPosition(Vector3 pos)
+        {
             pos.z = _backTransform.position.z;
             _backTransform.position = pos;
-
-            var scaleFactor = _camera.orthographicSize * 2 * _camera.aspect / size.x;
-            _backTransform.localScale = Vector3.one * scaleFactor;
         }
     }
 }

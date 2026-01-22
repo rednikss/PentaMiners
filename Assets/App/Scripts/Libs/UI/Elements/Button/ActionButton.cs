@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -43,7 +42,7 @@ namespace App.Scripts.Libs.UI.Elements.Button
 
             while (elapsedTime < fadeTime)
             {
-                elapsedTime += Time.unscaledDeltaTime;
+                elapsedTime += UnityEngine.Time.unscaledDeltaTime;
                 yield return null;
             }
 

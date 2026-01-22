@@ -1,12 +1,13 @@
-﻿using App.Scripts.Game.Modules.Background;
+﻿using App.Scripts.Game.Level.Loader;
+using App.Scripts.Game.Modules.Background;
 using App.Scripts.Game.Modules.Starter;
-using App.Scripts.Libs.Infrastructure.Core.EntryPoint.Starter;
-using App.Scripts.Libs.Infrastructure.Core.Service.Container;
-using App.Scripts.Libs.Infrastructure.Core.Service.Installer;
+using App.Scripts.Libs.Core.EntryPoint.Starter;
+using App.Scripts.Libs.Core.Service.Container;
+using App.Scripts.Libs.Core.Service.Installer;
 using App.Scripts.Libs.UI.Core.Container;
 using UnityEngine;
 
-namespace App.Scripts.Game.Installers.Modules
+namespace App.Scripts.Game.Modules.Installer
 {
     public class GameModulesInstaller : MonoInstaller
     {
@@ -26,7 +27,7 @@ namespace App.Scripts.Game.Installers.Modules
 
         private void BuildBackground(ServiceContainer container)
         {
-            var backAdapter = new BackgroundAdapter(backSprite, backTransform, sceneCamera);
+            var backAdapter = new BackgroundAdapter(backSprite, backTransform);
             
             container.SetService<IBackgroundAdapter, BackgroundAdapter>(backAdapter);
         }
@@ -36,7 +37,7 @@ namespace App.Scripts.Game.Installers.Modules
             var panelContainer = container.GetService<IPanelContainer>();
             var backAdapter = container.GetService<IBackgroundAdapter>();
             
-            var starter = new GameSceneStarter(panelContainer, backAdapter);
+            var starter = new GameSceneStarter(panelContainer, new LevelLoader("Level"));
 
             container.SetService<ISceneStarter, GameSceneStarter>(starter);
         }

@@ -1,5 +1,5 @@
-﻿using App.Scripts.Libs.Infrastructure.Core.Service.Container;
-using App.Scripts.Libs.Infrastructure.Core.Service.Installer;
+﻿using App.Scripts.Libs.Core.Service.Container;
+using App.Scripts.Libs.Core.Service.Installer;
 
 namespace App.Scripts.Game.Level.Installer
 {

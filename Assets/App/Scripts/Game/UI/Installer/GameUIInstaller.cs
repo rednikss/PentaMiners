@@ -1,8 +1,8 @@
-﻿using App.Scripts.Libs.Infrastructure.Core.Service.Container;
-using App.Scripts.Libs.Infrastructure.Core.Service.Installer;
+﻿using App.Scripts.Libs.Core.Service.Container;
+using App.Scripts.Libs.Core.Service.Installer;
 using App.Scripts.Libs.UI.Core.Builder;
 
-namespace App.Scripts.Game.Installers.UI
+namespace App.Scripts.Game.UI.Installer
 {
     public class GameUIInstaller : MonoInstaller
     {

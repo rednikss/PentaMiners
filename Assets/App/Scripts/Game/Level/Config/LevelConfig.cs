@@ -6,11 +6,18 @@ namespace App.Scripts.Game.Level.Config
     [Serializable]
     public class LevelConfig
     {
-        [Min(1)] public int Width;
-        [Min(1)] public int Height;
-        
-        public Color[][] Blocks;
+        public int[,] Blocks;
 
-        [Min(0)] public float GravityScale;
+        public float TickSpeed;
+        
+        public LevelConfig(Vector2Int gridSize)
+        {
+            Blocks = new int[gridSize.x, gridSize.y];
+            TickSpeed = 1;
+        }
+
+        public int GetWidth() => Blocks.GetLength(0);
+        
+        public int GetHeight() => Blocks.GetLength(1);
     }
 }

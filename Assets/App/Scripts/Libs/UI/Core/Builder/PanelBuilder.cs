@@ -1,6 +1,6 @@
-﻿using App.Scripts.Game.Panel.Controller;
-using App.Scripts.Game.Panel.View;
-using App.Scripts.Libs.Infrastructure.Core.Service.Container;
+﻿using App.Scripts.Game.UI.Controller;
+using App.Scripts.Game.UI.View;
+using App.Scripts.Libs.Core.Service.Container;
 using App.Scripts.Libs.UI.Core.Builder.Config;
 using App.Scripts.Libs.UI.Core.Container;
 using UnityEngine;
