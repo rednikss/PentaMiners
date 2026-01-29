@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928585aff183e9c4da6775c23940b1bf, type: 3}
   m_Name: Level Blocks Config
   m_EditorClassIdentifier: 
-  colorBlock: {fileID: 0}
+  colorBlock: {fileID: 5230321153915528463, guid: 7593d015215ca5c4da8e7e7f51d62a84, type: 3}
   _colors:
-  - ID: Red
+  - ID: 1
     Value: {r: 0.9960785, g: 0.47450984, b: 0.48627454, a: 1}
-  - ID: Orange
+  - ID: 2
     Value: {r: 1, g: 0.72156864, b: 0.3137255, a: 1}
-  - ID: Yellow
+  - ID: 3
     Value: {r: 1, g: 0.91372555, b: 0.33333334, a: 1}
-  - ID: Green
+  - ID: 4
     Value: {r: 0.56078434, g: 0.91372555, b: 0.40784317, a: 1}
-  - ID: Blue
+  - ID: 5
     Value: {r: 0.21176472, g: 0.8078432, b: 0.86274517, a: 1}
-  - ID: Purple
+  - ID: 6
     Value: {r: 0.6509804, g: 0.5294118, b: 0.79215693, a: 1}
-  _bonuses:
-  - ID: Rock
-    Value: {fileID: 0}
+  rockBlock:
+    ID: 10
+    Value: {fileID: 1833931913421015969, guid: ae85619f68347da4984bd0d7767f5137, type: 3}

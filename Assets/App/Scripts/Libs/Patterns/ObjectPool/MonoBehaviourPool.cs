@@ -3,70 +3,50 @@ using UnityEngine;
 
 namespace App.Scripts.Libs.Patterns.ObjectPool
 {
-    public abstract class MonoBehaviourPool<TObject> : MonoBehaviour, IObjectPool<TObject> where TObject : MonoBehaviour
+    public class MonoBehaviourPool<T> : IObjectPool<T> where T : MonoBehaviour
     {
-        [SerializeField] protected int startSize;
+        private readonly T _prefab;
 
-        [SerializeField] protected TObject prefab;
+        private readonly Transform _parent;
         
-        protected readonly List<TObject> UsingObjects = new();
-        
-        private readonly Stack<TObject> _pool = new();
+        private readonly Stack<T> _pool = new();
 
-        protected void CreateStartPool()
+        public MonoBehaviourPool(T prefab, Transform parent, int startSize = 0)
         {
-            for (int i = 0; i < startSize; i++) Create();
-        }
-
-        protected virtual TObject Create()
-        {
-            var newObject = Instantiate(prefab, transform);
+            _prefab = prefab;
+            _parent = parent;
             
-            UsingObjects.Add(newObject);
-            ReturnObject(newObject);
-
-            return newObject;
+            for (var i = 0; i < startSize; i++) Create();
         }
 
-        public virtual TObject Get()
+        private void Create()
+        {
+            var newObject = Object.Instantiate(_prefab, _parent);
+            
+            ReturnObject(newObject);
+        }
+
+        public T Get()
         {
             if (!_pool.TryPeek(out _)) Create();
             
             return TakeObject();
         }
 
-        public virtual void ReturnObject(TObject pooledObject)
+        public void ReturnObject(T pooledObject)
         {
             pooledObject.gameObject.SetActive(false);
 
-            UsingObjects.Remove(pooledObject);
             _pool.Push(pooledObject);
         }
 
-        protected virtual TObject TakeObject()
+        private T TakeObject()
         {
             var pooledObject = _pool.Pop();
-            UsingObjects.Add(pooledObject);
             
             pooledObject.gameObject.SetActive(true);
 
             return pooledObject;
-        }
-
-        protected virtual void DestroyObject(TObject pooledObject)
-        {
-            Destroy(pooledObject.gameObject);
-        }
-        
-        public virtual void Clear(bool clearUsing)
-        {
-            foreach (var obj in _pool) DestroyObject(obj);
-            _pool.Clear();
-            
-            if (!clearUsing) return;
-
-            foreach (var obj in UsingObjects) DestroyObject(obj);
-            UsingObjects.Clear();
         }
     }
 }

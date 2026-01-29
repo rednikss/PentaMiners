@@ -1,11 +1,9 @@
 ﻿namespace App.Scripts.Libs.Patterns.ObjectPool
 {
-    public interface IObjectPool<TObjectType>
+    public interface IObjectPool<T>
     {
-        public TObjectType Get();
+        public T Get();
 
-        public void ReturnObject(TObjectType pooledObject);
-
-        public void Clear(bool clearUsing);
+        public void ReturnObject(T pooledObject);
     }
 }

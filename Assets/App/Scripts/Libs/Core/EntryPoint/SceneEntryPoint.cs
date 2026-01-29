@@ -1,5 +1,5 @@
-﻿using App.Scripts.Libs.Core.Context;
-using App.Scripts.Libs.Core.EntryPoint.Starter;
+﻿using App.Scripts.Libs.Core.EntryPoint.Starter;
+using App.Scripts.Libs.Core.Project.Context;
 using App.Scripts.Libs.Core.Service.Installer;
 using UnityEngine;
 

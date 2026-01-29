@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using App.Scripts.Game.Level.Config;
-using App.Scripts.Game.Level.Config.Blocks;
+using App.Scripts.Game.Level.Initialization.Config;
+using App.Scripts.Game.Level.Initialization.Config.Blocks;
 using UnityEditor;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -19,9 +18,6 @@ namespace Editor.Level_Creator
         private Vector2Int _maxGridSize = new(10, 10);
         
         private Vector2Int _gridSize = new(5, 5);
-
-        
-        private string[] _types;
         
         
         private string _levelPath = "Assets/Resources/Level";
@@ -39,16 +35,6 @@ namespace Editor.Level_Creator
         private void CreateGUI()
         {
             _levelData = new LevelConfig(_gridSize);
-        }
-
-        private void UpdateTypeList()
-        {
-            var typesList = new List<string>();
-
-            typesList.Add("None");
-            if (_levelBlockConfig != null) typesList.AddRange(_levelBlockConfig.GetBlockTypeList());
-
-            _types = typesList.ToArray();
         }
 
         private void OnGUI()
@@ -73,7 +59,6 @@ namespace Editor.Level_Creator
             
             _gridSize.y = EditorGUILayout.IntField("Grid height", _gridSize.y);
 
-            UpdateTypeList();
             _gridSize.x = Math.Clamp(_gridSize.x, 1, _maxGridSize.x);
             _gridSize.y = Math.Clamp(_gridSize.y, 1, _maxGridSize.y);
             
@@ -90,7 +75,7 @@ namespace Editor.Level_Creator
                 GUILayout.BeginHorizontal();
                 for (var j = 0; j < _gridSize.y; j++)
                 {
-                    _levelData.Blocks[i, j] = EditorGUILayout.Popup(_levelData.Blocks[i, j], _types);
+                    _levelData.Blocks[i, j] = EditorGUILayout.IntField(_levelData.Blocks[i, j]);
                 }
                 GUILayout.EndHorizontal();
             }

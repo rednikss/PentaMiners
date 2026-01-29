@@ -448,6 +448,7 @@ MonoBehaviour:
   TargetFrameRate: 60
   defaultTickableHandler: {fileID: 1960661534224684134}
   fixedTickableHandler: {fileID: 5108045690102263134}
+  _camera: {fileID: 5015345607113270319}
 --- !u!1 &8905070553760247445
 GameObject:
   m_ObjectHideFlags: 0
