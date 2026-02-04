@@ -1,6 +1,6 @@
-﻿using App.Scripts.Game.UI.Click;
-using App.Scripts.Libs.UI.Core.Panel.View;
+﻿using App.Scripts.Libs.UI.Core.Panel.View;
 using App.Scripts.Libs.UI.Elements.Button;
+using App.Scripts.Libs.UI.Elements.Click;
 using UnityEngine;
 
 namespace App.Scripts.Game.UI.View

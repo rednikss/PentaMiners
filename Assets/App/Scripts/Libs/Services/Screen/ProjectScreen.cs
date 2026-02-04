@@ -19,6 +19,8 @@ namespace App.Scripts.Libs.Services.Screen
         }
 
         public Vector2 GetUnitSize() => _unitSize;
+        
+        public Vector2 GetPixelSize() =>_camera.pixelRect.size;
 
         public float GetAspect() => _camera.aspect;
         

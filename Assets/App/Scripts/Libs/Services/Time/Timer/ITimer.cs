@@ -1,6 +1,6 @@
-﻿using App.Scripts.Libs.Time.Tickable;
+﻿using App.Scripts.Libs.Services.Time.Tickable;
 
-namespace App.Scripts.Libs.Time.Timer
+namespace App.Scripts.Libs.Services.Time.Timer
 {
     public interface ITimer : ITickable
     {

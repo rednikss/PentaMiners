@@ -1,4 +1,4 @@
-﻿namespace App.Scripts.Game.Block
+﻿namespace App.Scripts.Game.Block.Base
 {
     public interface IDroppable
     {

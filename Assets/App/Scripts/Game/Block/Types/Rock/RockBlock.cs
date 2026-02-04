@@ -1,4 +1,6 @@
-﻿namespace App.Scripts.Game.Block.Base.Rock
+﻿using App.Scripts.Game.Block.Base;
+
+namespace App.Scripts.Game.Block.Types.Rock
 {
     public class RockBlock : BlockBase
     {

@@ -5,23 +5,23 @@ namespace App.Scripts.Libs.Patterns.ObjectPool
 {
     public class MonoBehaviourPool<T> : IObjectPool<T> where T : MonoBehaviour
     {
-        private readonly T _prefab;
+        protected readonly T Prefab;
 
-        private readonly Transform _parent;
+        protected readonly Transform Parent;
         
         private readonly Stack<T> _pool = new();
 
         public MonoBehaviourPool(T prefab, Transform parent, int startSize = 0)
         {
-            _prefab = prefab;
-            _parent = parent;
+            Prefab = prefab;
+            Parent = parent;
             
             for (var i = 0; i < startSize; i++) Create();
         }
 
-        private void Create()
+        protected virtual void Create()
         {
-            var newObject = Object.Instantiate(_prefab, _parent);
+            var newObject = Object.Instantiate(Prefab, Parent);
             
             ReturnObject(newObject);
         }

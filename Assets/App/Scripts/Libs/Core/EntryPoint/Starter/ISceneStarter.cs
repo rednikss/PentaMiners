@@ -1,7 +1,9 @@
-﻿namespace App.Scripts.Libs.Core.EntryPoint.Starter
+﻿using System.Threading.Tasks;
+
+namespace App.Scripts.Libs.Core.EntryPoint.Starter
 {
     public interface ISceneStarter
     {
-        public void StartScene();
+        public Task StartScene();
     }
 }

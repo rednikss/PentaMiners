@@ -1,5 +1,5 @@
 ﻿using App.Scripts.Libs.Core.Project.Model.Config;
-using App.Scripts.Libs.Data.Provider;
+using App.Scripts.Libs.Services.Data.Provider;
 using UnityEngine;
 
 namespace App.Scripts.Libs.Core.Project.Model

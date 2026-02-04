@@ -1,129 +1,89 @@
-﻿using App.Scripts.Game.Block.Base;
-using App.Scripts.Game.Block.Provider;
-using App.Scripts.Libs.Patterns.Command.Default;
-using UnityEngine;
+﻿using System;
+using App.Scripts.Game.Level.Core.FallingBlock;
+using App.Scripts.Game.Level.Core.Grid;
+using App.Scripts.Game.Level.Core.Queue;
+using App.Scripts.Libs.Services.Time.Tickable.Handler;
 
 namespace App.Scripts.Game.Level.Core.Manager
 {
     public class GameManager : IGameManager
     {
-        private readonly ICommand _gameOverCommand;
+        private readonly IFallingBlock _fallingBlock;
         
-        private readonly Vector3 _bottomLeftPosition;
+        private readonly ILevelGrid _levelGrid;
         
-        private readonly IBlockProvider _provider;
-
-        private LevelColumn[] _columns;
+        private readonly IBlockQueue _queue;
         
-        private float _speed;
+        private readonly ITickableHandler _tickableHandler;
         
-        private BlockBase _fallingBlock;
-
-        private int _currentColumn;
-
-        public GameManager(Vector3 bottomLeftPosition, IBlockProvider provider, ICommand gameOverCommand)
+        public event Action OnBlockDropped;
+        
+        public event Action OnLevelFail;
+        
+        public event Action OnLevelComplete;
+        
+        public GameManager(ILevelGrid levelGrid, IFallingBlock fallingBlock, IBlockQueue queue,
+            ITickableHandler handler)
         {
-            _bottomLeftPosition = bottomLeftPosition;
-            _provider = provider;
-            _gameOverCommand = gameOverCommand;
-            _speed = 1;
+            _fallingBlock = fallingBlock;
+            _levelGrid = levelGrid;
+            _queue = queue;
+            _tickableHandler = handler;
+            
+            OnBlockDropped += fallingBlock.Drop;
+            OnBlockDropped += OnDrop;
+        }
+
+        public void Start()
+        {
+            UpdateBlock();
+            _tickableHandler.AddTickable(this);
+        }
+
+        public void SetSpeed(float speed) => _fallingBlock.SetSpeed(speed);
+        
+        public void DashBlock(int column) => _fallingBlock.DashToColumn(column);
+        
+        public void Stop()
+        {
+            _tickableHandler.RemoveTickable(this);
         }
 
         public void Tick(float deltaTime)
         {
-            if (_fallingBlock is null) return;
+            _fallingBlock.Tick(deltaTime);
             
-            _fallingBlock.Move(_speed * deltaTime * Vector3.down);
+            if (!_fallingBlock.IsDropped()) return;
             
-            if (!_columns[_currentColumn].IsBlockDropped(_fallingBlock)) return;
-            
-            _columns[_currentColumn].Add(_fallingBlock);
-            _fallingBlock.OnDrop();
-            
-            SpawnFallingBlock();
+            OnBlockDropped?.Invoke();
         }
 
-        public void SetBlock(BlockBase block, int i, int j) => _columns[i].Set(block, j);
-
-        public void SetSpeed(float speed) => _speed = speed;
-        
-        public void InitGrid(int width, int height, float scale)
+        private void OnDrop()
         {
-            _columns = new LevelColumn[width];
-            
-            var position = _bottomLeftPosition + new Vector3(0.5f, 0.5f, 0) * scale;
-            
-            for (var i = 0; i < _columns.Length; i++)
+            if (_levelGrid.IsFull())
             {
-                _columns[i] = new LevelColumn(this, height, position, scale);
-                position += Vector3.right * scale;
+                OnLevelFail?.Invoke();
+                return;
             }
-        }
 
-        public void SetFallingBlockToColumn(int i)
-        {
-            _currentColumn = i;
-            _fallingBlock.DashToX(_columns[i].Position.x);
+            if (_levelGrid.IsEmpty())
+            {
+                OnLevelComplete?.Invoke();
+                return;
+            }
+            
+            UpdateBlock();
         }
         
-        public void SpawnFallingBlock()
+        private void UpdateBlock()
         {
-            _fallingBlock = _provider.GetNext();
-            SetFallingBlockToColumn(_columns.Length / 2);
-            _fallingBlock.SetPosition(_columns[_currentColumn].GetStartPosition());
-        }
-        
-        private class LevelColumn
-        {
-            public readonly Vector3 Position;
-            
-            private readonly BlockBase[] _blocks;
-            
-            private readonly float _columnStep;
-            
-            private readonly GameManager _gameManager;
-            
-            private int _currentHeight;
-            
-            public LevelColumn(GameManager gameManager, int maxHeight, Vector3 position, float columnStep)
-            {
-                _gameManager = gameManager;
-                _blocks = new BlockBase[maxHeight];
-                _columnStep = columnStep;
-                Position = position;
-            }
-            
-            public void Add(BlockBase block)
-            {
-                _blocks[_currentHeight++] = block;
-                block.SetPosition(GetPosition(_currentHeight));
-                
-                if (_currentHeight >= _blocks.Length)
-                {
-                    _gameManager._gameOverCommand.Execute();
-                }
-            }
+            _fallingBlock.SetBlock(_queue.GetNext());
 
-            public void Set(BlockBase block, int i)
-            {
-                _blocks[i] = block;
-                block.SetPosition(GetPosition(i));
-                
-                if (i > _currentHeight) _currentHeight = i;
-            }
-
-            public Vector3 GetPosition(float i)
-            {
-                return Position + _columnStep * i * Vector3.up;
-            }
+            var startPos = _levelGrid.GetSize();
+            startPos.x /= 2;
             
-            public Vector3 GetStartPosition() => GetPosition(_blocks.Length + 1);
-            
-
-            public bool IsBlockDropped(BlockBase fallingBlock)
-            {
-                return fallingBlock.GetPosition().y <= GetPosition(_currentHeight + 1).y;
-            }
+            _fallingBlock.SetPosition(_levelGrid.GetPosition(startPos.x, startPos.y));
+            _fallingBlock.DashToColumn(startPos.x);
         }
     }
 }

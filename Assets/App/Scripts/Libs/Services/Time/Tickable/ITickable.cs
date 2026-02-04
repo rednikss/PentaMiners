@@ -1,4 +1,4 @@
-﻿namespace App.Scripts.Libs.Time.Tickable
+﻿namespace App.Scripts.Libs.Services.Time.Tickable
 {
     public interface ITickable
     {

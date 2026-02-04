@@ -1,4 +1,4 @@
-﻿namespace App.Scripts.Libs.Time.Tickable.Handler
+﻿namespace App.Scripts.Libs.Services.Time.Tickable.Handler
 {
     public interface ITickableHandler
     {

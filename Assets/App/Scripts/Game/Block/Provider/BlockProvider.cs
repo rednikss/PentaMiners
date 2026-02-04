@@ -1,51 +1,59 @@
-﻿using App.Scripts.Game.Block.Base;
-using App.Scripts.Game.Block.Base.Color;
-using App.Scripts.Game.Block.Base.Rock;
-using App.Scripts.Game.Level.Initialization.Config.Blocks;
-using App.Scripts.Libs.Patterns.ObjectPool;
+﻿using System.Collections.Generic;
+using App.Scripts.Game.Block.Base;
+using App.Scripts.Game.Block.Types.Default;
+using App.Scripts.Libs.Patterns.Factory;
 using UnityEngine;
 
 namespace App.Scripts.Game.Block.Provider
 {
     public class BlockProvider : IBlockProvider
     {
-        private readonly LevelBlockConfig _config;
-        
-        private readonly IObjectPool<ColorBlock> _colorPool;
-        
-        private readonly IObjectPool<RockBlock> _rockPool;
+        private readonly Dictionary<int, IFactory<BlockBase>> _blockPools = new();
 
-        public BlockProvider(LevelBlockConfig config, IObjectPool<ColorBlock> colorPool,
-            IObjectPool<RockBlock> rockPool)
+        private readonly List<int> _colorsID = new();
+
+        private const string Factory = "IFactory`1";
+        
+        public void AddBlock(int id, IFactory<BlockBase> factory)
         {
-            _colorPool = colorPool;
-            _rockPool = rockPool;
-            _config = config;
+            if (factory.GetType().GetInterface(Factory) == typeof(IFactory<ColorBlock>))
+            {
+                _colorsID.Add(id);
+            }
+            
+            _blockPools.Add(id, factory);
         }
         
         public BlockBase GetBlock(int blockID)
         {
-            if (blockID == _config.rockBlock.ID) return _rockPool.Get();
-            
-            var colorBlock = _colorPool.Get();
-            colorBlock.SetColor(_config.GetColor(blockID));
-            
-            return colorBlock;
+            return _blockPools[blockID].Create();
         }
 
-        public BlockBase GetNext()
+        public T GetBlock<T>() where T : BlockBase
         {
-            return GetRandomColorBlock();
+            if (typeof(T) == typeof(ColorBlock)) return GetRandomColorBlock() as T;
+            
+            foreach (var pair in _blockPools)
+            {
+                var factory = pair.Value;
+                
+                if (factory.GetType().GetInterface(Factory) == typeof(IFactory<T>))
+                {
+                    return pair.Value.Create() as T;
+                }
+            }
+            
+            Debug.LogError($"Can't find {nameof(IFactory<T>)}");
+            
+            return null;
         }
 
         private BlockBase GetRandomColorBlock()
         {
-            var id = Random.Range(0, _config._colors.Length);
-
-            var block = _colorPool.Get();
-            block.SetColor(_config._colors[id].Value);
+            var blockID = Random.Range(0,  _colorsID.Count);
+            blockID = _colorsID[blockID];
             
-            return block;
+            return _blockPools[blockID].Create();
         }
     }
 }

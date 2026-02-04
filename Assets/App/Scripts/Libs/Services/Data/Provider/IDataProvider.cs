@@ -1,4 +1,4 @@
-﻿namespace App.Scripts.Libs.Data.Provider
+﻿namespace App.Scripts.Libs.Services.Data.Provider
 {
     public interface IDataProvider
     {

@@ -1,44 +1,51 @@
 ﻿using App.Scripts.Game.Block.Provider;
 using App.Scripts.Game.Level.Background;
+using App.Scripts.Game.Level.Core.Grid;
 using App.Scripts.Game.Level.Core.Manager;
 using App.Scripts.Game.Level.Initialization.Config;
 using App.Scripts.Libs.Services.Screen;
+using UnityEngine;
 
 namespace App.Scripts.Game.Level.Initialization.Builder
 {
     public class LevelBuilder : ILevelBuilder
     {
         private readonly IProjectScreen _projectScreen;
+        
+        private readonly ILevelGrid _levelGrid;
 
+        private readonly IGameManager _gameManager;
+        
         private readonly IBackgroundAdapter _backgroundAdapter;
 
         private readonly IBlockProvider _blockProvider;
-        
-        private readonly IGameManager _gameManager;
 
-        public LevelBuilder(IProjectScreen projectScreen, IBackgroundAdapter backgroundAdapter, 
-            IBlockProvider blockProvider, IGameManager gameManager)
+        public LevelBuilder(IProjectScreen projectScreen, ILevelGrid levelGrid,
+            IBackgroundAdapter backgroundAdapter, IBlockProvider blockProvider, IGameManager gameManager)
         {
             _projectScreen = projectScreen;
+            _levelGrid = levelGrid;
             _backgroundAdapter = backgroundAdapter;
-            _blockProvider = blockProvider;
             _gameManager = gameManager;
+            _blockProvider = blockProvider;
         }
 
-        public void Build(LevelConfig levelConfig)
+        public IGameManager Build(LevelConfig levelConfig)
         {
             var unitSize = _projectScreen.GetUnitSize();
             var scale = unitSize.x / levelConfig.GetWidth();
-            var gridSize = unitSize / scale;
-
-            _backgroundAdapter.SetGrid(gridSize, scale);
+            var gridHeight = Mathf.CeilToInt(unitSize.y / scale);
+            var gridSize = new Vector2Int(levelConfig.GetWidth(), gridHeight);
             
-            _gameManager.InitGrid(levelConfig.GetWidth(), (int)gridSize.y, scale);
+            var pos = _projectScreen.GetPositionByPercent(Vector2.zero);
+            
+            _backgroundAdapter.SetGrid(gridSize, pos, scale);
+            _levelGrid.Init(gridSize, pos, scale);
             _gameManager.SetSpeed(levelConfig.TickSpeed);
             
             BuildBlocks(levelConfig);
-
-            _gameManager.SpawnFallingBlock();
+            
+            return _gameManager;
         }
 
         
@@ -52,7 +59,7 @@ namespace App.Scripts.Game.Level.Initialization.Builder
                 if (id == 0) continue;
                 
                 var block = _blockProvider.GetBlock(id);  
-                _gameManager.SetBlock(block, i, j);
+                _levelGrid.SetBlock(block, i, j);
             }
         }
     }

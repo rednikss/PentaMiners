@@ -1,9 +1,10 @@
-﻿using App.Scripts.Game.Level.Initialization.Config;
+﻿using App.Scripts.Game.Level.Core.Manager;
+using App.Scripts.Game.Level.Initialization.Config;
 
 namespace App.Scripts.Game.Level.Initialization.Builder
 {
     public interface ILevelBuilder
     {
-        public void Build(LevelConfig levelConfig);
+        public IGameManager Build(LevelConfig levelConfig);
     }
 }

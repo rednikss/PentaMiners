@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace App.Scripts.Game.UI.Click
+namespace App.Scripts.Libs.UI.Elements.Click
 {
     public class ClickZone : MonoBehaviour, IPointerClickHandler
     {

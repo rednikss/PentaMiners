@@ -1,13 +1,15 @@
 ﻿using App.Scripts.Game.Block.Provider;
 using App.Scripts.Game.Level.Background;
-using App.Scripts.Game.Level.Core.GameOver;
+using App.Scripts.Game.Level.Core.FallingBlock;
+using App.Scripts.Game.Level.Core.Grid;
 using App.Scripts.Game.Level.Core.Manager;
+using App.Scripts.Game.Level.Core.Queue;
 using App.Scripts.Game.Level.Initialization.Builder;
 using App.Scripts.Game.Level.Initialization.Loader;
 using App.Scripts.Libs.Core.Service.Container;
 using App.Scripts.Libs.Core.Service.Installer;
 using App.Scripts.Libs.Services.Screen;
-using App.Scripts.Libs.Time.Tickable.Handler;
+using App.Scripts.Libs.Services.Time.Tickable.Handler;
 using UnityEngine;
 
 namespace App.Scripts.Game.Level.Installer
@@ -35,29 +37,31 @@ namespace App.Scripts.Game.Level.Installer
             var loader = new LevelLoader(levelPath);
             container.SetService<ILevelLoader, LevelLoader>(loader);
             
-            var screen = container.GetService<IProjectScreen>();
-            var pos = screen.GetPositionByPercent(Vector2.zero);
-            
-            var backAdapter = new BackgroundAdapter(backgroundSprite, backgroundTransform, pos);
+            var backAdapter = new BackgroundAdapter(backgroundSprite, backgroundTransform);
             container.SetService<IBackgroundAdapter, BackgroundAdapter>(backAdapter);
 
             var provider = container.GetService<IBlockProvider>();
-            var gameOverCommand = new GameOverCommand();
-            var gameManager = new GameManager(pos, provider, gameOverCommand);
-            container.SetService<IGameManager, GameManager>(gameManager);
             
+            var levelGrid = new LevelGrid();
+            container.SetService<ILevelGrid, LevelGrid>(levelGrid);
+            
+            var block = new FallingBlock(levelGrid);
+            var queue = new BlockQueue(provider);
             var tickableHandler = container.GetService<ITickableHandler>();
-            tickableHandler.AddTickable(gameManager);
+            
+            var gameManager = new GameManager(levelGrid, block, queue, tickableHandler);
+            container.SetService<IGameManager, GameManager>(gameManager);
         }
 
         private void BuildLevelBuilder(ServiceContainer container)
         {
             var sceneScreen = container.GetService<IProjectScreen>();
+            var grid = container.GetService<ILevelGrid>();
+            var backAdapter = container.GetService<IBackgroundAdapter>();
             var provider = container.GetService<IBlockProvider>();
             var gameManager = container.GetService<IGameManager>();
-            var backAdapter = container.GetService<IBackgroundAdapter>();
             
-            var builder = new LevelBuilder(sceneScreen, backAdapter, provider, gameManager);
+            var builder = new LevelBuilder(sceneScreen, grid, backAdapter, provider, gameManager);
             container.SetService<ILevelBuilder, LevelBuilder>(builder);
         }
     }

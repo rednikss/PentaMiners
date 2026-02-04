@@ -9,16 +9,16 @@ namespace App.Scripts.Game.Level.Background
         private readonly Transform _backTransform;
         
 
-        public BackgroundAdapter(SpriteRenderer backSprite, Transform backTransform, Vector3 position)
+        public BackgroundAdapter(SpriteRenderer backSprite, Transform backTransform)
         {
             _backSprite = backSprite;
             _backTransform = backTransform;
-            SetPosition(position);
         }
 
-        public void SetGrid(Vector2 size, float scale)
+        public void SetGrid(Vector2Int size, Vector3 pos, float scale)
         {
             _backSprite.size = size;
+            SetPosition(pos);
             _backTransform.localScale = Vector3.one * scale;
         }
 

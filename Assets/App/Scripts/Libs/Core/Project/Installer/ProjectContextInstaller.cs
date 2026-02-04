@@ -2,10 +2,10 @@
 using App.Scripts.Libs.Core.Service.Container;
 using App.Scripts.Libs.Core.Service.Installer;
 using App.Scripts.Libs.Services.Screen;
-using App.Scripts.Libs.Time.Tickable.Handler;
-using App.Scripts.Libs.Time.Tickable.Handler.Default;
-using App.Scripts.Libs.Time.Tickable.Handler.Fixed;
-using App.Scripts.Libs.Time.Timer;
+using App.Scripts.Libs.Services.Time.Tickable.Handler;
+using App.Scripts.Libs.Services.Time.Tickable.Handler.Default;
+using App.Scripts.Libs.Services.Time.Tickable.Handler.Fixed;
+using App.Scripts.Libs.Services.Time.Timer;
 using UnityEngine;
 
 namespace App.Scripts.Libs.Core.Project.Installer

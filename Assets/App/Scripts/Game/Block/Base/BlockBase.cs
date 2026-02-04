@@ -1,4 +1,5 @@
 ﻿using App.Scripts.Libs.UI.Core.View.Config;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -11,16 +12,17 @@ namespace App.Scripts.Game.Block.Base
         [SerializeField] private Transform _transform;
         
         public void Move(Vector3 delta) => _transform.position += delta;
-        
+
         public void SetPosition(Vector3 pos) => _transform.position = pos;
 
         public Vector3 GetPosition() => _transform.position;
         
-        public void DashToX(float x)
+        public UniTask DashToX(float x)
         {
-            _transform.DOMoveX(x, _dashConfig.Duration)
+            return _transform.DOMoveX(x, _dashConfig.Duration)
                 .SetEase(_dashConfig.Ease)
-                .SetLink(gameObject);
+                .SetLink(gameObject)
+                .Play().ToUniTask();
         }
         
         public void SetScale(float diameter)

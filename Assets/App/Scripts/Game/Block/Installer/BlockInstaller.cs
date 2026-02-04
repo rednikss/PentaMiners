@@ -1,6 +1,8 @@
-﻿using App.Scripts.Game.Block.Base.Color;
-using App.Scripts.Game.Block.Base.Rock;
-using App.Scripts.Game.Block.Provider;
+﻿using App.Scripts.Game.Block.Provider;
+using App.Scripts.Game.Block.Types.Default;
+using App.Scripts.Game.Block.Types.Default.Factory;
+using App.Scripts.Game.Block.Types.Rock;
+using App.Scripts.Game.Block.Types.Rock.Factory;
 using App.Scripts.Game.Level.Initialization.Config.Blocks;
 using App.Scripts.Libs.Core.Service.Container;
 using App.Scripts.Libs.Core.Service.Installer;
@@ -20,7 +22,18 @@ namespace App.Scripts.Game.Block.Installer
             var colorPool = new MonoBehaviourPool<ColorBlock>(config.colorBlock, blocksParent, 25);
             var rockPool = new MonoBehaviourPool<RockBlock>(config.rockBlock.Value, blocksParent, 3);
             
-            var provider = new BlockProvider(config, colorPool, rockPool);
+            var provider = new BlockProvider();
+
+            foreach (var pair in config._colors)
+            {
+                var factory = new ColorBlockFactory(colorPool, pair.Value);
+                
+                provider.AddBlock(pair.ID, factory);
+            }
+
+            var rockFactory = new RockBlockFactory(rockPool);
+            provider.AddBlock(config.rockBlock.ID, rockFactory);
+            
             container.SetService<IBlockProvider, BlockProvider>(provider);
         }
     }

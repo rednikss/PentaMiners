@@ -1,4 +1,5 @@
-﻿using App.Scripts.Game.Level.Initialization.Builder;
+﻿using System.Threading.Tasks;
+using App.Scripts.Game.Level.Initialization.Builder;
 using App.Scripts.Game.Level.Initialization.Loader;
 using App.Scripts.Game.UI.Controller;
 using App.Scripts.Libs.Core.EntryPoint.Starter;
@@ -26,15 +27,16 @@ namespace App.Scripts.Game.Modules.Starter
             _levelBuilder = levelBuilder;
         }
 
-        public void StartScene()
+        public async Task StartScene()
         {
-            var panel = _panelContainer.GetPanel<GamePanelController>();
-            panel.ShowAnimated();
-
             var counter = _playerModel.GetCurrentLevelCounter();
             var level = _levelLoader.LoadLevel(counter);
+            var manager = _levelBuilder.Build(level);
             
-            _levelBuilder.Build(level);
+            var panel = _panelContainer.GetPanel<GamePanelController>();
+            await panel.ShowAnimated();
+            
+            manager.Start();
         }
     }
 }

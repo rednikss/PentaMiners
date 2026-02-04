@@ -1,6 +1,10 @@
-﻿using App.Scripts.Game.UI.Controller;
+﻿using App.Scripts.Game.Level.Commands.Dash;
+using App.Scripts.Game.Level.Core.Grid;
+using App.Scripts.Game.Level.Core.Manager;
+using App.Scripts.Game.UI.Controller;
 using App.Scripts.Game.UI.View;
 using App.Scripts.Libs.Core.Service.Container;
+using App.Scripts.Libs.Services.Screen;
 using App.Scripts.Libs.UI.Core.Builder.Config;
 using App.Scripts.Libs.UI.Core.Container;
 using UnityEngine;
@@ -31,7 +35,13 @@ namespace App.Scripts.Libs.UI.Core.Builder
             if (_container.HasPanel<GamePanelController>()) return;
 
             var view = Object.Instantiate(_config.GetPanelView<GamePanelView>(), _canvasTransform);
-            var controller = new GamePanelController(view);
+
+            var screen = _serviceContainer.GetService<IProjectScreen>();
+            var grid = _serviceContainer.GetService<ILevelGrid>();
+            var manager = _serviceContainer.GetService<IGameManager>();
+            var command = new BlockDashCommand(screen, grid, manager);
+            
+            var controller = new GamePanelController(view, command);
             
             view.Construct();
             _container.AddPanel(controller);

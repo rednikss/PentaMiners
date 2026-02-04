@@ -1,6 +1,6 @@
 ﻿using System;
-using App.Scripts.Game.Block.Base.Color;
-using App.Scripts.Game.Block.Base.Rock;
+using App.Scripts.Game.Block.Types.Default;
+using App.Scripts.Game.Block.Types.Rock;
 using UnityEngine;
 
 namespace App.Scripts.Game.Level.Initialization.Config.Blocks

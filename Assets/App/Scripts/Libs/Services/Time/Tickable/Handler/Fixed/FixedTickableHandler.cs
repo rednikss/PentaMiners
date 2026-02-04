@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace App.Scripts.Libs.Time.Tickable.Handler.Fixed
+namespace App.Scripts.Libs.Services.Time.Tickable.Handler.Fixed
 {
     public class FixedTickableHandler : MonoBehaviour, ITickableHandler
     {

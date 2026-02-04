@@ -6,6 +6,6 @@ namespace App.Scripts.Game.Block.Provider
     {
         public BlockBase GetBlock(int blockID);
 
-        public BlockBase GetNext();
+        public T GetBlock<T>() where T : BlockBase;
     }
 }
