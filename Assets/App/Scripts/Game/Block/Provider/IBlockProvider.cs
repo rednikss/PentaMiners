@@ -1,4 +1,4 @@
-﻿using App.Scripts.Game.Block.Base;
+﻿using App.Scripts.Game.Block.Types.Base;
 
 namespace App.Scripts.Game.Block.Provider
 {

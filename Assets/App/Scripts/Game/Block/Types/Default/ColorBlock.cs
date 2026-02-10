@@ -1,4 +1,5 @@
-﻿using App.Scripts.Game.Block.Base;
+﻿using App.Scripts.Game.Block.Types.Base;
+using App.Scripts.Libs.Patterns.ObjectPool;
 using UnityEngine;
 
 namespace App.Scripts.Game.Block.Types.Default
@@ -6,12 +7,25 @@ namespace App.Scripts.Game.Block.Types.Default
     public class ColorBlock : BlockBase
     {
         [SerializeField] private SpriteRenderer _renderer;
+
+        private IObjectPool<ColorBlock> _objectPool;
         
-        public void SetColor(Color color)
+        public Color Color
         {
-            _renderer.color = color;
+            get => _renderer.color;
+            set => _renderer.color = value;
         }
-        
+
+        public void Construct(IObjectPool<ColorBlock> objectPool)
+        {
+            _objectPool = objectPool;
+        }
+
+        public override void Return()
+        {
+            _objectPool.ReturnObject(this);
+        }
+
         public override void OnDrop()
         {
             //обсёрвер.проверьИЕбани

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using App.Scripts.Game.Block.Base;
+using App.Scripts.Game.Block.Types.Base;
 using App.Scripts.Game.Block.Types.Default;
 using App.Scripts.Libs.Patterns.Factory;
 using UnityEngine;
@@ -29,6 +29,7 @@ namespace App.Scripts.Game.Block.Provider
             return _blockPools[blockID].Create();
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public T GetBlock<T>() where T : BlockBase
         {
             if (typeof(T) == typeof(ColorBlock)) return GetRandomColorBlock() as T;

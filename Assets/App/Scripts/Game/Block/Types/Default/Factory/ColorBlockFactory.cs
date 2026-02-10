@@ -18,10 +18,11 @@ namespace App.Scripts.Game.Block.Types.Default.Factory
 
         public ColorBlock Create()
         {
-            var newBlock = _pool.Get();
-            newBlock.SetColor(_color);
+            var block = _pool.Get();
+            block.Construct(_pool);
+            block.Color = _color;
             
-            return newBlock;
+            return block;
         }
     }
 }

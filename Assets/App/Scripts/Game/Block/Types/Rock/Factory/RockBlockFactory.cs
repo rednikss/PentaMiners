@@ -15,6 +15,7 @@ namespace App.Scripts.Game.Block.Types.Rock.Factory
         public RockBlock Create()
         {
             var block = _pool.Get();
+            block.Construct(_pool);
             
             return block;
         }

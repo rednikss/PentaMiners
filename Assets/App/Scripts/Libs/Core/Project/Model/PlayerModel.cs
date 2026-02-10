@@ -36,7 +36,7 @@ namespace App.Scripts.Libs.Core.Project.Model
 
         public void IncreaseCurrentLevelCounter() => _data.CurrentLevel++;
 
-        private void OnApplicationQuit()
+        private void OnDestroy()
         {
             _dataProvider.SetData(_data, path);
         }

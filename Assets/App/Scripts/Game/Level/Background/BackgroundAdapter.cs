@@ -15,14 +15,14 @@ namespace App.Scripts.Game.Level.Background
             _backTransform = backTransform;
         }
 
-        public void SetGrid(Vector2Int size, Vector3 pos, float scale)
+        public void Init(Vector2Int size, Vector3 pos, float scale)
         {
             _backSprite.size = size;
             SetPosition(pos);
             _backTransform.localScale = Vector3.one * scale;
         }
 
-        public void SetPosition(Vector3 pos)
+        private void SetPosition(Vector3 pos)
         {
             pos.z = _backTransform.position.z;
             _backTransform.position = pos;

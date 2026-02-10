@@ -1,6 +1,6 @@
 ﻿using App.Scripts.Game.Level.Commands.Dash;
+using App.Scripts.Game.Level.Core.Block;
 using App.Scripts.Game.Level.Core.Grid;
-using App.Scripts.Game.Level.Core.Manager;
 using App.Scripts.Game.UI.Controller;
 using App.Scripts.Game.UI.View;
 using App.Scripts.Libs.Core.Service.Container;
@@ -38,8 +38,8 @@ namespace App.Scripts.Libs.UI.Core.Builder
 
             var screen = _serviceContainer.GetService<IProjectScreen>();
             var grid = _serviceContainer.GetService<ILevelGrid>();
-            var manager = _serviceContainer.GetService<IGameManager>();
-            var command = new BlockDashCommand(screen, grid, manager);
+            var block = _serviceContainer.GetService<IFallingBlock>();
+            var command = new BlockDashCommand(screen, grid, block);
             
             var controller = new GamePanelController(view, command);
             

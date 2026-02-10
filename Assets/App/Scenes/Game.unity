@@ -379,8 +379,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b75c025f35584cf8a2f54ab34b6ae8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelPath: Level
-  sceneCamera: {fileID: 519420031}
+  _directions:
+  - {x: 1, y: 0}
+  - {x: -1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  _chainLength: 5
   backgroundTransform: {fileID: 1266285459}
   backgroundSprite: {fileID: 1266285460}
 --- !u!1 &1120964687
@@ -427,6 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21a244180a8243f3822dd0c1e4b28092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelPath: Level/
 --- !u!1 &1266285458
 GameObject:
   m_ObjectHideFlags: 0
