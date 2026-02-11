@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using App.Scripts.Libs.UI.Core.Panel.Controller;
 
 namespace App.Scripts.Libs.UI.Core.Container

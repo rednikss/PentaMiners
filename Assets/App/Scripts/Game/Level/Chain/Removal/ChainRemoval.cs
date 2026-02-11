@@ -13,15 +13,15 @@ namespace App.Scripts.Game.Level.Chain.Removal
         
         private readonly ILevelGrid _levelGrid;
         
-        private readonly IGridData _gridData;
+        private readonly IGridInfo _gridInfo;
         
         private readonly IGridAnimator _animator;
 
-        public ChainRemoval(ChainHandler chainHandler, ILevelGrid levelGrid, IGridData gridData, IGridAnimator animator)
+        public ChainRemoval(ChainHandler chainHandler, ILevelGrid levelGrid, IGridInfo gridInfo, IGridAnimator animator)
         {
             _chainHandler = chainHandler;
             _levelGrid = levelGrid;
-            _gridData = gridData;
+            _gridInfo = gridInfo;
             _animator = animator;
         }
 
@@ -29,7 +29,7 @@ namespace App.Scripts.Game.Level.Chain.Removal
         {
             while (true)
             {
-                HashSet<int> columns = RemoveChains();
+                var columns = RemoveChains();
                 if (columns.Count == 0) break;
                 
                 DropColumns(columns);
@@ -42,11 +42,12 @@ namespace App.Scripts.Game.Level.Chain.Removal
             var changedColumns = new HashSet<int>();
             
             var blockList = _chainHandler.Handle();
-            if (blockList.Count == 0) return changedColumns;
-                
             foreach (var index in blockList)
             {
-                _levelGrid.RemoveBlock(index.x, index.y);
+                var b = _levelGrid.GetBlock(index.x, index.y);
+                _levelGrid.SetBlock(null, index.x, index.y);
+                
+                b.Return();
                 changedColumns.Add(index.x);
             }
 
@@ -63,7 +64,7 @@ namespace App.Scripts.Game.Level.Chain.Removal
         
         private void DropColumn(int i)
         {
-            for (int read = 0, write = 0; read < _gridData.GetSize().y; read++)
+            for (int read = 0, write = 0; read < _gridInfo.GetSize().y; read++)
             {
                 var block = _levelGrid.GetBlock(i, read);
                 if (block is null) continue;

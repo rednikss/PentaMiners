@@ -1,4 +1,4 @@
-﻿using App.Scripts.Libs.UI.Core.View.Config;
+﻿using App.Scripts.Libs.Tween.Config;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -11,9 +11,9 @@ namespace App.Scripts.Libs.UI.Core.View.Element.Base
         
         [field: SerializeField] public TweenConfig HideConfig;
         
-        protected Tween ShowTween;
+        protected DG.Tweening.Tween ShowTween;
 
-        protected Tween HideTween;
+        protected DG.Tweening.Tween HideTween;
 
         public abstract void Construct();
         

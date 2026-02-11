@@ -7,15 +7,15 @@ namespace App.Scripts.Game.Level.Core.Spawner
 {
     public class QueueSpawner : IQueueSpawner
     {
-        private readonly IGridData _gridData;
+        private readonly IGridInfo _gridInfo;
         
         private readonly IFallingBlock _fallingBlock;
         
         private IBlockQueue _queue;
 
-        public QueueSpawner(IGridData gridData, IFallingBlock fallingBlock)
+        public QueueSpawner(IGridInfo gridInfo, IFallingBlock fallingBlock)
         {
-            _gridData = gridData;
+            _gridInfo = gridInfo;
             _fallingBlock = fallingBlock;
         }
 
@@ -28,13 +28,15 @@ namespace App.Scripts.Game.Level.Core.Spawner
         {
             var block = _queue.GetNext();
             var gridPos = GetStartPos();
+            var worldPos = _gridInfo.IndexToWorldPos(gridPos.x, gridPos.y);
             
-            _fallingBlock.SetBlock(block, gridPos.x, gridPos.y);
+            block.SetPosition(worldPos);
+            _fallingBlock.SetBlock(block, gridPos.x);
         }
 
         private Vector2Int GetStartPos()
         {
-            var startPos = _gridData.GetSize();
+            var startPos = _gridInfo.GetSize();
             startPos.x /= 2;
             
             return startPos;

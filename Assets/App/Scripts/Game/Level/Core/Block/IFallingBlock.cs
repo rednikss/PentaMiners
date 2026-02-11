@@ -5,7 +5,7 @@ namespace App.Scripts.Game.Level.Core.Block
 {
     public interface IFallingBlock
     {
-        public void SetBlock(BlockBase block, int i, int j);
+        public void SetBlock(BlockBase block, int i);
         
         public void Move(Vector3 delta);
         

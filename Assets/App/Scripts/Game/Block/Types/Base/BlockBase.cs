@@ -1,11 +1,11 @@
-﻿using App.Scripts.Libs.UI.Core.View.Config;
+﻿using App.Scripts.Libs.Tween.Config;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
 namespace App.Scripts.Game.Block.Types.Base
 {
-    public abstract class BlockBase : MonoBehaviour, IDroppable
+    public abstract class BlockBase : MonoBehaviour
     {
         [SerializeField] private TweenConfig _dashConfig;
         
@@ -19,9 +19,9 @@ namespace App.Scripts.Game.Block.Types.Base
 
         public Vector3 GetPosition() => _transform.position;
         
-        public UniTask DashToX(float x)
+        public async UniTask DashToX(float x)
         {
-            return _transform.DOMoveX(x, _dashConfig.Duration)
+            await _transform.DOMoveX(x, _dashConfig.Duration)
                 .SetEase(_dashConfig.Ease)
                 .SetLink(gameObject)
                 .Play()

@@ -1,7 +1,7 @@
 ﻿using System;
 using App.Scripts.Game.Level.Chain.Removal;
 using App.Scripts.Game.Level.Core.Block;
-using App.Scripts.Game.Level.Core.Grid.Data;
+using App.Scripts.Game.Level.Core.Grid.Data.State;
 using App.Scripts.Game.Level.Core.Spawner;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -10,12 +10,12 @@ namespace App.Scripts.Game.Level.Core.Cycle
 {
     public class LevelCycle : ILevelCycle
     {
-        private readonly IGridData _gridData;
+        private readonly IGridState _gridState;
         
         private readonly IQueueSpawner _queue;
         
         private readonly IChainRemoval _chainRemoval;
-        
+
         private readonly IFallingBlock _fallingBlock;
         
         private float _speed;
@@ -24,10 +24,10 @@ namespace App.Scripts.Game.Level.Core.Cycle
         
         public event Action OnLevelComplete;
         
-        public LevelCycle(IGridData gridData, IFallingBlock fallingBlock, IQueueSpawner queue,
+        public LevelCycle(IGridState gridState, IFallingBlock fallingBlock, IQueueSpawner queue,
             IChainRemoval chainRemoval)
         {
-            _gridData = gridData;
+            _gridState = gridState;
             _fallingBlock = fallingBlock;
             _queue = queue;
             _chainRemoval = chainRemoval;
@@ -42,15 +42,9 @@ namespace App.Scripts.Game.Level.Core.Cycle
         {
             _fallingBlock.Move(_speed * deltaTime * Vector3.down);
 
-            if (_fallingBlock.IsDropped())
-            {
-                _ = DropEvent();
-            }
-        }
-
-        public void Stop()
-        {
-            _fallingBlock.Drop();
+            if (!_fallingBlock.IsDropped()) return;
+            
+            _ = DropEvent();
         }
 
         public void SetSpeed(float speed) => _speed = speed;
@@ -61,21 +55,20 @@ namespace App.Scripts.Game.Level.Core.Cycle
             
             await _chainRemoval.Remove();
             
-            if (!CheckGameEnded())
-            {
-                _queue.SpawnNext();
-            }
+            if (CheckGameEnded()) return;
+            
+            _queue.SpawnNext();
         }
 
         private bool CheckGameEnded()
         {
-            if (_gridData.IsFull())
+            if (_gridState.IsFull())
             {
                 OnLevelFail?.Invoke();
                 return true;
             }
             
-            if (_gridData.IsEmpty())
+            if (_gridState.IsEmpty())
             {
                 OnLevelComplete?.Invoke();
                 return true;

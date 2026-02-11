@@ -20,11 +20,5 @@ namespace App.Scripts.Game.Level.Core.Grid
         public void SetBlock(BlockBase block, int i, int j) => _blocks[i, j] = block;
 
         public BlockBase GetBlock(int i, int j) => _blocks[i, j];
-        
-        public void RemoveBlock(int i, int j)
-        {
-            _blocks[i, j].Return();
-            _blocks[i, j] = null;
-        }
     }
 }

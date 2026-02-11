@@ -12,7 +12,5 @@ namespace App.Scripts.Game.Level.Core.Grid
         public void SetBlock(BlockBase block, int i, int j);
 
         public BlockBase GetBlock(int i, int j);
-        
-        public void RemoveBlock(int i, int j);
     }
 }

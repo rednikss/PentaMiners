@@ -24,6 +24,11 @@ namespace App.Scripts.Libs.Services.Screen
 
         public float GetAspect() => _camera.aspect;
         
+        public Vector2 PixelToUnit(Vector2 pixel)
+        {
+            return pixel * GetUnitSize() / GetPixelSize();
+        }
+
         public Vector3 GetPositionByPercent(Vector2 screenPercent)
         {
             screenPercent -= Vector2.one * 0.5f;

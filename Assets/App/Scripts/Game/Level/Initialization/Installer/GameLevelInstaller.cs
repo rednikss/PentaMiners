@@ -2,10 +2,13 @@
 using App.Scripts.Game.Level.Chain.Handler;
 using App.Scripts.Game.Level.Chain.Removal;
 using App.Scripts.Game.Level.Core.Block;
+using App.Scripts.Game.Level.Core.Block.Drop;
 using App.Scripts.Game.Level.Core.Cycle;
 using App.Scripts.Game.Level.Core.Grid;
 using App.Scripts.Game.Level.Core.Grid.Animator.Wave;
 using App.Scripts.Game.Level.Core.Grid.Data;
+using App.Scripts.Game.Level.Core.Grid.Data.Blocks;
+using App.Scripts.Game.Level.Core.Grid.Data.State;
 using App.Scripts.Game.Level.Core.Spawner;
 using App.Scripts.Game.Level.Initialization.Builder;
 using App.Scripts.Libs.Core.Service.Container;
@@ -22,6 +25,8 @@ namespace App.Scripts.Game.Level.Initialization.Installer
         [SerializeField] private Vector2Int[] _directions;
 
         [SerializeField, Min(2)] private int _chainLength;
+        
+        [SerializeField, Min(0)] private float _waveStepTime;
         
         [Header("Background")]
         
@@ -40,23 +45,29 @@ namespace App.Scripts.Game.Level.Initialization.Installer
             var grid = new LevelGrid();
             container.SetService<ILevelGrid, LevelGrid>(grid);
             
-            var data = new GridData(grid);
-            container.SetService<IGridData, GridData>(data);
+            var info = new GridInfo(grid);
+            container.SetService<IGridInfo, GridInfo>(info);
             
-            var block = new FallingBlock(grid, data);
+            var gridBlocksData = new GridBlocksData(grid);
+            container.SetService<IGridBlocksData, GridBlocksData>(gridBlocksData);
+            
+            var dropData = new GridDropData(grid, info);
+            var block = new FallingBlock(grid, dropData, info);
             container.SetService<IFallingBlock, FallingBlock>(block);
             
-            var spawner = new QueueSpawner(data, block);
+            var spawner = new QueueSpawner(info, block);
             container.SetService<IQueueSpawner, QueueSpawner>(spawner);
             
             var chainHandler = new ChainHandler(grid, _directions, _chainLength);
-            var animator = new WaveGridAnimator(grid, data);
-            var removal = new ChainRemoval(chainHandler, grid, data, animator);
+            var animator = new WaveGridAnimator(grid, info, _waveStepTime);
+            var removal = new ChainRemoval(chainHandler, grid, info, animator);
             container.SetService<IChainRemoval, ChainRemoval>(removal);
             
-            var cycle = new LevelCycle(data, block, spawner, removal);
+            var gridState = new GridState(grid);
+            var handler = container.GetService<ITickableHandler>();
+            var cycle = new LevelCycle(gridState, block, spawner, removal);
             container.SetService<ILevelCycle, LevelCycle>(cycle);
-            container.GetService<ITickableHandler>().AddTickable(cycle);
+            handler.AddTickable(cycle);
         }
 
         private void BuildLevelBuilder(ServiceContainer container)

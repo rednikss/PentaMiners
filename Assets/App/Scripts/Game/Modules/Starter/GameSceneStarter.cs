@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using App.Scripts.Game.Level.Initialization.Builder;
 using App.Scripts.Game.Level.Initialization.Loader;
-using App.Scripts.Game.UI.Controller;
 using App.Scripts.Libs.Core.EntryPoint.Starter;
 using App.Scripts.Libs.Core.Project.Model;
 using App.Scripts.Libs.UI.Core.Container;
+using App.Scripts.UI.Panels.Game.Controller;
 
 namespace App.Scripts.Game.Modules.Starter
 {

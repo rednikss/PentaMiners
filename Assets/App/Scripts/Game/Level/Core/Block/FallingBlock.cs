@@ -1,4 +1,5 @@
 ﻿using App.Scripts.Game.Block.Types.Base;
+using App.Scripts.Game.Level.Core.Block.Drop;
 using App.Scripts.Game.Level.Core.Grid;
 using App.Scripts.Game.Level.Core.Grid.Data;
 using JetBrains.Annotations;
@@ -10,54 +11,60 @@ namespace App.Scripts.Game.Level.Core.Block
     {
         private readonly ILevelGrid _grid;
         
-        private readonly IGridData _gridData;
-
-        private float _speed;
+        private readonly IGridDropData _dropData;
+        
+        private readonly IGridInfo _gridInfo;
 
         [CanBeNull] private BlockBase _block;
         
         private int _curColumn;
 
-        public FallingBlock(ILevelGrid grid, IGridData gridData)
+        public FallingBlock(ILevelGrid grid, IGridDropData dropData, IGridInfo gridInfo)
         {
-            _gridData = gridData;
+            _dropData = dropData;
+            _gridInfo = gridInfo;
             _grid = grid;
         }
         
-        public void SetBlock(BlockBase fallingBlock, int i, int j)
+        public void SetBlock(BlockBase fallingBlock, int i)
         {
             _curColumn = i;
             _block = fallingBlock;
-            
-            var worldPos = _gridData.GetPosition(i, j);
-            _block?.SetPosition(worldPos);
         }
 
         public void Move(Vector3 delta) => _block?.Move(delta);
         
         public void DashToColumn(int newColumn)
         {
-            _curColumn = _gridData.ClampDashAbility(_block, _curColumn, newColumn);
-            var newX = _gridData.GetPosition(_curColumn, 0).x;
+            _curColumn = _dropData.ClampDashAbility(_block, _curColumn, newColumn);
+            var newX = _gridInfo.IndexToWorldPos(_curColumn, 0).x;
             
             _block?.DashToX(newX);
         }
         
         public bool IsDropped()
         {
-            return _block is not null && _gridData.IsDropped(_block, _curColumn);
+            if (_block is null) return false;
+            
+            var height = _dropData.GetDropIndex(_curColumn);
+            var worldPos = _gridInfo.IndexToWorldPos(_curColumn, height);
+            
+            return _block.GetPosition().y < worldPos.y;
         }
 
         public void Drop()
         {
-            var height = _gridData.GetDropIndex(_curColumn);
-            _grid.SetBlock(_block, _curColumn,  height);
-            
-            var worldPos = _gridData.GetPosition(_curColumn, height);
-            _block?.SetPosition(worldPos);
-            
-            _block?.OnDrop();
+            var block = _block;
             _block = null;
+            
+            var height = _dropData.GetDropIndex(_curColumn);
+            var worldPos = _gridInfo.IndexToWorldPos(_curColumn, height);
+            
+            block?.SetPosition(worldPos);
+            
+            if (height < _gridInfo.GetSize().y) _grid.SetBlock(block, _curColumn,  height);
+            
+            block?.OnDrop();
         }
     }
 }

@@ -7,18 +7,18 @@ namespace App.Scripts.Game.Level.Core.Grid.Animator.Default
     {
         private readonly ILevelGrid _levelGrid;
         
-        private readonly IGridData _gridData;
+        private readonly IGridInfo _gridInfo;
 
-        public DefaultGridAnimator(ILevelGrid levelGrid, IGridData gridData)
+        public DefaultGridAnimator(ILevelGrid levelGrid, IGridInfo gridInfo)
         {
             _levelGrid = levelGrid;
-            _gridData = gridData;
+            _gridInfo = gridInfo;
         }
 
         public UniTask UpdateGrid()
         {
-            for (var i = 0; i < _gridData.GetSize().x; i++)
-            for (var j = 0; j < _gridData.GetSize().y; j++)
+            for (var i = 0; i < _gridInfo.GetSize().x; i++)
+            for (var j = 0; j < _gridInfo.GetSize().y; j++)
             {
                 UpdatePos(i, j);
             }
@@ -31,10 +31,10 @@ namespace App.Scripts.Game.Level.Core.Grid.Animator.Default
             var block = _levelGrid.GetBlock(i, j);
             if (block is null) return;
             
-            var position = _gridData.GetPosition(i, j);
+            var position = _gridInfo.IndexToWorldPos(i, j);
             if (block.GetPosition() == position)return;
                 
-            _levelGrid.GetBlock(i, j).SetPosition(_gridData.GetPosition(i, j)); 
+            _levelGrid.GetBlock(i, j).SetPosition(_gridInfo.IndexToWorldPos(i, j)); 
         }
     }
 }

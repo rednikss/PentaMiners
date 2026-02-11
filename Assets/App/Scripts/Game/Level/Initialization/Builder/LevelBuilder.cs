@@ -3,6 +3,7 @@ using App.Scripts.Game.Level.Background;
 using App.Scripts.Game.Level.Core.Cycle;
 using App.Scripts.Game.Level.Core.Grid;
 using App.Scripts.Game.Level.Core.Grid.Data;
+using App.Scripts.Game.Level.Core.Grid.Data.Blocks;
 using App.Scripts.Game.Level.Core.Spawner;
 using App.Scripts.Game.Level.Core.Spawner.Queue;
 using App.Scripts.Game.Level.Initialization.Config;
@@ -20,14 +21,14 @@ namespace App.Scripts.Game.Level.Initialization.Builder
         
         private readonly ILevelGrid _levelGrid;
         
-        private readonly IGridData _gridData;
+        private readonly IGridInfo _gridInfo;
 
         public LevelBuilder(ServiceContainer container)
         {
             _container = container;
             _blockProvider = _container.GetService<IBlockProvider>();
             _levelGrid = _container.GetService<ILevelGrid>();
-            _gridData =  _container.GetService<IGridData>();
+            _gridInfo =  _container.GetService<IGridInfo>();
         }
 
         public ILevelCycle Build(LevelConfig levelConfig)
@@ -43,7 +44,7 @@ namespace App.Scripts.Game.Level.Initialization.Builder
             var pos = screen.GetPositionByPercent(Vector2.zero);
             
             _levelGrid.Init(gridSize);
-            _gridData.Init(pos, scale);
+            _gridInfo.Init(pos, scale);
             _container.GetService<IBackgroundAdapter>().Init(gridSize, pos, scale);
             
             var queue = BuildBlockQueue(levelConfig);
@@ -59,9 +60,9 @@ namespace App.Scripts.Game.Level.Initialization.Builder
 
         private IBlockQueue BuildBlockQueue(LevelConfig levelConfig)
         {
-            return new BlockQueue(_blockProvider);
+            var blocksData = _container.GetService<IGridBlocksData>();
+            return new BlockQueue(_blockProvider, blocksData);
         }
-
 
         private void BuildBlocks(LevelConfig config)
         {
@@ -75,7 +76,7 @@ namespace App.Scripts.Game.Level.Initialization.Builder
                 var block = _blockProvider.GetBlock(id);  
                 _levelGrid.SetBlock(block, i, j);
                 
-                var pos = _gridData.GetPosition(i, j);
+                var pos = _gridInfo.IndexToWorldPos(i, j);
                 block.SetPosition(pos);
             }
         }

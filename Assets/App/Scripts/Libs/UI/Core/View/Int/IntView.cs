@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using App.Scripts.Libs.UI.Core.View.Config;
+using App.Scripts.Libs.Tween.Config;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;

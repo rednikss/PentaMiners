@@ -9,17 +9,20 @@ namespace App.Scripts.Game.Level.Core.Grid.Animator.Wave
     {
         private readonly ILevelGrid _levelGrid;
         
-        private readonly IGridData _gridData;
+        private readonly IGridInfo _gridInfo;
+        
+        private readonly float _stepTime;
 
-        public WaveGridAnimator(ILevelGrid levelGrid, IGridData gridData)
+        public WaveGridAnimator(ILevelGrid levelGrid, IGridInfo gridInfo, float stepTime)
         {
             _levelGrid = levelGrid;
-            _gridData = gridData;
+            _gridInfo = gridInfo;
+            _stepTime = stepTime;
         }
 
         public async UniTask UpdateGrid()
         {
-            for (var i = 0; i < _gridData.GetSize().x; i++)
+            for (var i = 0; i < _gridInfo.GetSize().x - 1; i++)
             {
                 await UpdateColumn(i);
             }
@@ -27,20 +30,19 @@ namespace App.Scripts.Game.Level.Core.Grid.Animator.Wave
 
         private async UniTask UpdateColumn(int i)
         {
-            var tList = new List<UniTask>();
-
-            for (var j = 0; j < _gridData.GetSize().y; j++)
+            var t = new List<UniTask>();
+            for (var j = 0; j < _gridInfo.GetSize().y; j++)
             {
                 var block = _levelGrid.GetBlock(i, j);
                 if (block is null) break;
             
-                var position = _gridData.GetPosition(i, j).y;
-                if (Mathf.Approximately(block.GetPosition().y, position))continue;
+                var position = _gridInfo.IndexToWorldPos(i, j).y;
+                if (Mathf.Approximately(block.GetPosition().y, position)) continue;
                 
-                tList.Add(block.DashToY(position)); 
+                t.Add(block.DashToY(position)); 
             }
-            
-            await UniTask.WhenAll(tList);
+
+            await UniTask.WhenAll(t);
         }
     }
 }

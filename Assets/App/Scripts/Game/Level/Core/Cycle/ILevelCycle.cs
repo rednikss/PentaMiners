@@ -12,7 +12,5 @@ namespace App.Scripts.Game.Level.Core.Cycle
         public void SetSpeed(float speed);
 
         public void Start();
-        
-        public void Stop();
     }
 }

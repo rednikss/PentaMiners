@@ -1,6 +1,5 @@
 ﻿using System;
 using App.Scripts.Libs.UI.Core.Panel.View;
-using App.Scripts.Libs.UI.Core.View.Element.Base;
 using Cysharp.Threading.Tasks;
 using Object = UnityEngine.Object;
 
