@@ -1,4 +1,4 @@
-﻿using App.Scripts.Libs.Tween.Config;
+﻿using App.Scripts.Libs.Configs.Animation;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -14,7 +14,9 @@ namespace App.Scripts.Game.Block.Types.Base
         [SerializeField] private Transform _transform;
 
         public void Move(Vector3 delta) => _transform.position += delta;
-
+        
+        public void SetScale(float scale) => _transform.localScale = scale * Vector3.one;
+        
         public void SetPosition(Vector3 pos) => _transform.position = pos;
 
         public Vector3 GetPosition() => _transform.position;
@@ -23,6 +25,7 @@ namespace App.Scripts.Game.Block.Types.Base
         {
             await _transform.DOMoveX(x, _dashConfig.Duration)
                 .SetEase(_dashConfig.Ease)
+                .SetUpdate(UpdateType.Manual)
                 .SetLink(gameObject)
                 .Play()
                 .AsyncWaitForCompletion().AsUniTask();
@@ -32,6 +35,7 @@ namespace App.Scripts.Game.Block.Types.Base
         {
             await _transform.DOMoveY(y, _dropConfig.Duration)
                 .SetEase(_dropConfig.Ease)
+                .SetUpdate(UpdateType.Manual)
                 .SetLink(gameObject)
                 .Play()
                 .AsyncWaitForCompletion().AsUniTask();

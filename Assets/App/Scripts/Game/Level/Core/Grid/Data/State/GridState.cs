@@ -16,10 +16,10 @@ namespace App.Scripts.Game.Level.Core.Grid.Data.State
             var size = _grid.GetSize();
             for (int i = 0, j = size.y - 1; i < size.x; i++)
             {
-                if (_grid.GetBlock(i, j) is null) return false;
+                if (_grid.GetBlock(i, j) is not null) return true;
             }
 
-            return true;
+            return false;
         }
 
         public bool IsEmpty()

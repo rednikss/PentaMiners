@@ -1,8 +1,9 @@
 ﻿using App.Scripts.Libs.Core.Service.Container;
 using App.Scripts.Libs.Core.Service.Installer;
+using App.Scripts.Libs.UI.Builder;
+using App.Scripts.Libs.UI.Builder.Config;
 using App.Scripts.Libs.UI.Core.Container;
 using App.Scripts.UI.Builder;
-using App.Scripts.UI.Builder.Config;
 using UnityEngine;
 
 namespace App.Scripts.UI.Installer

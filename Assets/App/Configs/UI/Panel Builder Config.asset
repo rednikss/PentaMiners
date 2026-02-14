@@ -13,4 +13,9 @@ MonoBehaviour:
   m_Name: Panel Builder Config
   m_EditorClassIdentifier: 
   panels:
-  - {fileID: 5748339245902253091, guid: c51b68cfef90b164094ae9e3732b06e0, type: 3}
+  - View:
+      _value: {fileID: 7842156115092030375, guid: c51b68cfef90b164094ae9e3732b06e0, type: 3}
+    Animator: {fileID: 11400000, guid: b5552efa8d80e0944bc37c79aa1da6a3, type: 2}
+  - View:
+      _value: {fileID: 6833180399970770615, guid: 7322e2e91e53df744a6e22e4e8571a07, type: 3}
+    Animator: {fileID: 11400000, guid: 05d8eb04a341f4b478e471cb6cb875f4, type: 2}

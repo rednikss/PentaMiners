@@ -41,8 +41,9 @@ namespace App.Scripts.Game.Level.Initialization.Builder
             var gridHeight = Mathf.CeilToInt(unitSize.y / scale);
             var gridSize = new Vector2Int(levelConfig.GetWidth(), gridHeight);
             
-            var pos = screen.GetPositionByPercent(Vector2.zero);
+            var pos = screen.GetWorldByPercent(Vector2.zero);
             
+            _blockProvider.SetBlockScale(scale);
             _levelGrid.Init(gridSize);
             _gridInfo.Init(pos, scale);
             _container.GetService<IBackgroundAdapter>().Init(gridSize, pos, scale);

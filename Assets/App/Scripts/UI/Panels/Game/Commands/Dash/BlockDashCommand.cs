@@ -1,7 +1,6 @@
 ﻿using App.Scripts.Game.Level.Core.Block;
-using App.Scripts.Game.Level.Core.Grid;
 using App.Scripts.Game.Level.Core.Grid.Data;
-using App.Scripts.Libs.Patterns.Command.Value;
+using App.Scripts.Libs.Patterns.Command.Default;
 using App.Scripts.Libs.Services.Screen;
 using UnityEngine;
 

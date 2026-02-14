@@ -4,7 +4,7 @@ using App.Scripts.Game.Level.Initialization.Loader;
 using App.Scripts.Libs.Core.EntryPoint.Starter;
 using App.Scripts.Libs.Core.Project.Model;
 using App.Scripts.Libs.UI.Core.Container;
-using App.Scripts.UI.Panels.Game.Controller;
+using App.Scripts.UI.Panels.Game.View;
 
 namespace App.Scripts.Game.Modules.Starter
 {
@@ -33,7 +33,7 @@ namespace App.Scripts.Game.Modules.Starter
             var level = _levelLoader.LoadLevel(counter);
             var manager = _levelBuilder.Build(level);
             
-            var panel = _panelContainer.GetPanel<GamePanelController>();
+            var panel = _panelContainer.GetPanel<GamePanelView>();
             await panel.ShowAnimated();
             
             manager.Start();

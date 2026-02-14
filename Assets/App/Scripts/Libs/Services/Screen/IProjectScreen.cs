@@ -9,10 +9,11 @@ namespace App.Scripts.Libs.Services.Screen
         
         public Vector2 GetPixelSize();
         
-        public Vector3 GetPositionByPercent(Vector2 screenPercent);
-
-        public float GetAspect();
-        
         public Vector2 PixelToUnit(Vector2 pixel);
+        
+        public Vector3 GetWorldByPercent(Vector2 screenPercent);
+
+        public Vector3 GetPixelByPercent(Vector2 screenPercent);
+
     }
 }

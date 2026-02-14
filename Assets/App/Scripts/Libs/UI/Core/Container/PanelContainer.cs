@@ -1,37 +1,28 @@
 ﻿using System.Collections.Generic;
-using App.Scripts.Libs.UI.Core.Panel.Controller;
+using App.Scripts.Libs.UI.Core.Panel.View;
 
 namespace App.Scripts.Libs.UI.Core.Container
 {
     public class PanelContainer : IPanelContainer
     {
-        private readonly List<PanelController> _panels = new();
+        private readonly List<IPanelView> _panels = new();
 
-        public T GetPanel<T>() where T : PanelController
+        public T GetPanel<T>() where T : class, IPanelView
         {
             foreach (var panel in _panels)
             {
                 if (panel.GetType() != typeof(T)) continue;
                 
-                return (T) panel;
+                return panel as T;
             }
-
+            
             return null;
         }
 
-        public bool HasPanel<T>() where T : PanelController => GetPanel<T>() != null;
+        public bool HasPanel<T>() where T : class, IPanelView => GetPanel<T>() is not null;
 
-        public void AddPanel(PanelController panel) => _panels.Add(panel);
+        public void AddPanel(IPanelView panel) => _panels.Add(panel);
 
-        public void RemovePanel(PanelController panel) => _panels.Remove(panel);
-
-        public void Dispose()
-        {
-            while (_panels.Count > 0)
-            {
-                _panels[0].Destroy();
-                _panels.RemoveAt(0);
-            }
-        }
+        public void RemovePanel(IPanelView panel) => _panels.Remove(panel);
     }
 }

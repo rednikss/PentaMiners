@@ -6,6 +6,7 @@ using App.Scripts.Libs.Services.Time.Tickable.Handler;
 using App.Scripts.Libs.Services.Time.Tickable.Handler.Default;
 using App.Scripts.Libs.Services.Time.Tickable.Handler.Fixed;
 using App.Scripts.Libs.Services.Time.Timer;
+using App.Scripts.Libs.Services.Tween.ManualManager;
 using UnityEngine;
 
 namespace App.Scripts.Libs.Core.Project.Installer
@@ -29,11 +30,14 @@ namespace App.Scripts.Libs.Core.Project.Installer
             
             var timer = new Timer();
             container.SetServiceSelf(timer);
+            defaultTickableHandler.AddTickable(timer);
             
             var sceneScreen = new ProjectScreen(_camera);
             container.SetService<IProjectScreen, ProjectScreen>(sceneScreen);
             
-            defaultTickableHandler.AddTickable(timer);
+            var tweenManager = new ManualTweenManager();
+            container.SetService<ITweenManager, ManualTweenManager>(tweenManager);
+            defaultTickableHandler.AddTickable(tweenManager);
         }
     }
 }

@@ -2,11 +2,10 @@
 using App.Scripts.Libs.Services.Screen;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace App.Scripts.Libs.UI.Elements.Invisible.Swipe
 {
-    public class SwipeZone : Graphic, IPointerDownHandler, IPointerUpHandler, IDragHandler
+    public class SwipeZone : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         [SerializeField] private float _maxSwipeTime = 0.5f;
         

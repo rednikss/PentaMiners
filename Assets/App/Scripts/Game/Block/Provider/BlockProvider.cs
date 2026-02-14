@@ -13,6 +13,8 @@ namespace App.Scripts.Game.Block.Provider
         private readonly List<int> _colorsID = new();
 
         private const string Factory = "IFactory`1";
+
+        private float _blockScale = 1f;
         
         public void AddBlock(int id, IFactory<BlockBase> factory)
         {
@@ -23,10 +25,14 @@ namespace App.Scripts.Game.Block.Provider
             
             _blockPools.Add(id, factory);
         }
-        
+
+        public void SetBlockScale(float scale) => _blockScale = scale;
+
         public BlockBase GetBlock(int blockID)
         {
-            return _blockPools[blockID].Create();
+            var b = _blockPools[blockID].Create();
+            b.SetScale(_blockScale);
+            return b;
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -40,7 +46,9 @@ namespace App.Scripts.Game.Block.Provider
                 
                 if (factory.GetType().GetInterface(Factory) == typeof(IFactory<T>))
                 {
-                    return pair.Value.Create() as T;
+                    var b = pair.Value.Create() as T;
+                    b!.SetScale(_blockScale);
+                    return b;
                 }
             }
             
@@ -54,7 +62,9 @@ namespace App.Scripts.Game.Block.Provider
             var blockID = Random.Range(0,  _colorsID.Count);
             blockID = _colorsID[blockID];
             
-            return _blockPools[blockID].Create();
+            var b = _blockPools[blockID].Create();
+            b.SetScale(_blockScale);
+            return b;
         }
     }
 }

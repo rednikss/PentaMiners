@@ -4,8 +4,10 @@ namespace App.Scripts.Game.Block.Provider
 {
     public interface IBlockProvider
     {
+        public void SetBlockScale(float scale);
+        
         public BlockBase GetBlock(int blockID);
-
+        
         public T GetBlock<T>() where T : BlockBase;
     }
 }
