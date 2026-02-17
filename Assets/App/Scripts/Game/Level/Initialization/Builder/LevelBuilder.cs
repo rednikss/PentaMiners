@@ -9,6 +9,7 @@ using App.Scripts.Game.Level.Core.Spawner.Queue;
 using App.Scripts.Game.Level.Initialization.Config;
 using App.Scripts.Libs.Core.Service.Container;
 using App.Scripts.Libs.Services.Screen;
+using App.Scripts.Libs.Services.Time.Tickable.Handler;
 using UnityEngine;
 
 namespace App.Scripts.Game.Level.Initialization.Builder
@@ -55,7 +56,7 @@ namespace App.Scripts.Game.Level.Initialization.Builder
             cycle.SetSpeed(levelConfig.TickSpeed);
             
             BuildBlocks(levelConfig);
-            
+            _container.GetService<ITickableHandler>().AddTickable(cycle);
             return cycle;
         }
 

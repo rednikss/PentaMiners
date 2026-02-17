@@ -7,7 +7,7 @@ namespace App.Scripts.Game.Level.Core.Block
     {
         public void SetBlock(BlockBase block, int i);
         
-        public void Move(Vector3 delta);
+        public BlockBase GetBlock();
         
         public void DashToColumn(int i);
 

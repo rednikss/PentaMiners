@@ -1,10 +1,9 @@
 ﻿using App.Scripts.Game.Level.Core.Block;
 using App.Scripts.Game.Level.Core.Grid.Data;
 using App.Scripts.Libs.Patterns.Command.Default;
-using App.Scripts.Libs.Patterns.Command.Value;
 using UnityEngine;
 
-namespace App.Scripts.UI.Panels.Game.Commands.Drop
+namespace App.Scripts.UI.Panels.Commands.Drop
 {
     public class DropBlockCommand : ICommand<Vector2>
     {
@@ -23,7 +22,7 @@ namespace App.Scripts.UI.Panels.Game.Commands.Drop
             if (!IsValueValid(value)) return;
             
             var size = _gridInfo.GetSize();
-            _fallingBlock.Move(size.y * Vector3.down);
+            _fallingBlock.GetBlock().Move(size.y * Vector3.down);
         }
 
         private bool IsValueValid(Vector2 value)

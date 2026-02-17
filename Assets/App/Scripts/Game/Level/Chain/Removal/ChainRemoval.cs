@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using App.Scripts.Game.Level.Chain.Handler;
 using App.Scripts.Game.Level.Core.Grid;
 using App.Scripts.Game.Level.Core.Grid.Animator;
@@ -25,15 +26,16 @@ namespace App.Scripts.Game.Level.Chain.Removal
             _animator = animator;
         }
 
-        public async UniTask Remove()
+        public async UniTask Remove(CancellationToken ctsToken)
         {
             while (true)
             {
+                ctsToken.ThrowIfCancellationRequested();
                 var columns = RemoveChains();
                 if (columns.Count == 0) break;
                 
                 DropColumns(columns);
-                await _animator.UpdateGrid();
+                await _animator.UpdateGrid(ctsToken);
             }
         }
 

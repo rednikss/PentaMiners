@@ -5,36 +5,28 @@ using UnityEngine;
 
 namespace App.Scripts.Libs.UI.Core.Panel.View
 {
-    public class PanelView<T> : MonoBehaviour, IPanelView where T : Component
+    public abstract class PanelView : MonoBehaviour
     {
-        [SerializeField] private T _component;
+        protected Tween ShowTween;
 
-        private Tween _showTween;
-
-        private Tween _hideTween;
-
-        protected void Construct(IPanelAnimator<T> config)
-        {
-            _showTween = config.GetShowTween(_component);
-            _hideTween = config.GetHideTween(_component);
-        }
+        protected Tween HideTween;
         
         public async UniTask ShowAnimated()
         {
             Show();
             
-            _hideTween.Complete();
-            _showTween.Restart();
+            HideTween.Complete();
+            ShowTween.Restart();
             
-            await _showTween.AsyncWaitForCompletion().AsUniTask();
+            await ShowTween.AsyncWaitForCompletion().AsUniTask();
         }
 
         public async UniTask HideAnimated()
         {
-            _showTween.Complete();
-            _hideTween.Restart();
+            ShowTween.Complete();
+            HideTween.Restart();
             
-            await _hideTween.AsyncWaitForCompletion().AsUniTask();
+            await HideTween.AsyncWaitForCompletion().AsUniTask();
             
             Hide();
         }
@@ -48,6 +40,30 @@ namespace App.Scripts.Libs.UI.Core.Panel.View
         public void Hide()
         {
             gameObject.SetActive(false);
+        }
+    }
+    
+    public class PanelView<T> : PanelView where T : Component
+    {
+        [SerializeField] private T _component;
+
+        protected void Construct(IPanelAnimator<T> config)
+        {
+            ShowTween = config.GetShowTween(_component);
+            HideTween = config.GetHideTween(_component);
+        }
+    }
+    
+    public class PanelView<T1, T2> : PanelView where T1 : Component where T2 : Component
+    {
+        [SerializeField] private T1 _firstComponent;
+
+        [SerializeField] private T2 _secondComponent;
+
+        protected void Construct(IPanelAnimator<T1, T2> config)
+        {
+            ShowTween = config.GetShowTween(_firstComponent, _secondComponent);
+            HideTween = config.GetHideTween(_firstComponent, _secondComponent);
         }
     }
 }

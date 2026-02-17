@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using App.Scripts.Game.Level.Chain.Removal;
 using App.Scripts.Game.Level.Core.Block;
 using App.Scripts.Game.Level.Core.Grid.Data.State;
@@ -19,6 +20,8 @@ namespace App.Scripts.Game.Level.Core.Cycle
         private readonly IFallingBlock _fallingBlock;
         
         private float _speed;
+
+        private CancellationTokenSource _cts;
         
         public event Action OnLevelFail;
         
@@ -38,9 +41,17 @@ namespace App.Scripts.Game.Level.Core.Cycle
             _queue.SpawnNext();
         }
 
+        public void Stop()
+        {
+            _fallingBlock.GetBlock()?.Return();
+            _fallingBlock.SetBlock(null, 0);
+            _cts?.Cancel();
+            _cts?.Dispose();
+        }
+        
         public void Tick(float deltaTime)
         {
-            _fallingBlock.Move(_speed * deltaTime * Vector3.down);
+            _fallingBlock.GetBlock()?.Move(_speed * deltaTime * Vector3.down);
 
             if (!_fallingBlock.IsDropped()) return;
             
@@ -53,7 +64,8 @@ namespace App.Scripts.Game.Level.Core.Cycle
         {
             _fallingBlock.Drop();
             
-            await _chainRemoval.Remove();
+            _cts =  new CancellationTokenSource();
+            await _chainRemoval.Remove(_cts.Token);
             
             if (CheckGameEnded()) return;
             

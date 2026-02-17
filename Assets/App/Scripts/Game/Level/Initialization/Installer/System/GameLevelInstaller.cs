@@ -1,4 +1,5 @@
-﻿using App.Scripts.Game.Level.Background;
+﻿using App.Scripts.Game.Commands.GameOver;
+using App.Scripts.Game.Level.Background;
 using App.Scripts.Game.Level.Chain.Handler;
 using App.Scripts.Game.Level.Chain.Removal;
 using App.Scripts.Game.Level.Core.Block;
@@ -13,7 +14,7 @@ using App.Scripts.Game.Level.Core.Spawner;
 using App.Scripts.Game.Level.Initialization.Builder;
 using App.Scripts.Libs.Core.Service.Container;
 using App.Scripts.Libs.Core.Service.Installer;
-using App.Scripts.Libs.Services.Time.Tickable.Handler;
+using App.Scripts.Libs.UI.Core.Container;
 using UnityEngine;
 
 namespace App.Scripts.Game.Level.Initialization.Installer.System
@@ -25,8 +26,6 @@ namespace App.Scripts.Game.Level.Initialization.Installer.System
         [SerializeField] private Vector2Int[] _directions;
 
         [SerializeField, Min(2)] private int _chainLength;
-        
-        [SerializeField, Min(0)] private float _waveStepTime;
         
         [Header("Background")]
         
@@ -59,15 +58,18 @@ namespace App.Scripts.Game.Level.Initialization.Installer.System
             container.SetService<IQueueSpawner, QueueSpawner>(spawner);
             
             var chainHandler = new ChainHandler(grid, _directions, _chainLength);
-            var animator = new WaveGridAnimator(grid, info, _waveStepTime);
+            var animator = new WaveGridAnimator(grid, info);
             var removal = new ChainRemoval(chainHandler, grid, info, animator);
             container.SetService<IChainRemoval, ChainRemoval>(removal);
             
             var gridState = new GridState(grid);
-            var handler = container.GetService<ITickableHandler>();
             var cycle = new LevelCycle(gridState, block, spawner, removal);
+
+            var pContainer = container.GetService<IPanelContainer>();
+            var gameOverCommand = new GameOverCommand(pContainer);
+            cycle.OnLevelFail += gameOverCommand.Execute;
+            
             container.SetService<ILevelCycle, LevelCycle>(cycle);
-            handler.AddTickable(cycle);
         }
 
         private void BuildLevelBuilder(ServiceContainer container)

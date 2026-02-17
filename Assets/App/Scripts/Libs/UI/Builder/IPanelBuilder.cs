@@ -5,5 +5,7 @@
         public void BuildGamePanel();
         
         public void BuildPausePanel();
+        
+        public void BuildLosePanel();
     }
 }

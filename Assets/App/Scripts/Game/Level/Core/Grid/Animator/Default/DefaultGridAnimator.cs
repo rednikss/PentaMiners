@@ -1,4 +1,5 @@
-﻿using App.Scripts.Game.Level.Core.Grid.Data;
+﻿using System.Threading;
+using App.Scripts.Game.Level.Core.Grid.Data;
 using Cysharp.Threading.Tasks;
 
 namespace App.Scripts.Game.Level.Core.Grid.Animator.Default
@@ -15,7 +16,7 @@ namespace App.Scripts.Game.Level.Core.Grid.Animator.Default
             _gridInfo = gridInfo;
         }
 
-        public UniTask UpdateGrid()
+        public UniTask UpdateGrid(CancellationToken ctsToken)
         {
             for (var i = 0; i < _gridInfo.GetSize().x; i++)
             for (var j = 0; j < _gridInfo.GetSize().y; j++)

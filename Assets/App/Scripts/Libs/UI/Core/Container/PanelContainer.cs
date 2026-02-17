@@ -5,9 +5,9 @@ namespace App.Scripts.Libs.UI.Core.Container
 {
     public class PanelContainer : IPanelContainer
     {
-        private readonly List<IPanelView> _panels = new();
+        private readonly List<PanelView> _panels = new();
 
-        public T GetPanel<T>() where T : class, IPanelView
+        public T GetPanel<T>() where T : PanelView
         {
             foreach (var panel in _panels)
             {
@@ -19,10 +19,10 @@ namespace App.Scripts.Libs.UI.Core.Container
             return null;
         }
 
-        public bool HasPanel<T>() where T : class, IPanelView => GetPanel<T>() is not null;
+        public bool HasPanel<T>() where T : PanelView => GetPanel<T>() is not null;
 
-        public void AddPanel(IPanelView panel) => _panels.Add(panel);
+        public void AddPanel(PanelView panel) => _panels.Add(panel);
 
-        public void RemovePanel(IPanelView panel) => _panels.Remove(panel);
+        public void RemovePanel(PanelView panel) => _panels.Remove(panel);
     }
 }

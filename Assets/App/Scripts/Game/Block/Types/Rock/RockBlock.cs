@@ -9,12 +9,14 @@ namespace App.Scripts.Game.Block.Types.Rock
 
         public void Construct(IObjectPool<RockBlock> objectPool)
         {
+            base.Construct();
             _objectPool = objectPool;
         }
 
 
         public override void Return()
         {
+            base.Return();
             _objectPool.ReturnObject(this);
         }
 

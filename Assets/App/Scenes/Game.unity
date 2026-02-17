@@ -223,11 +223,11 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 0
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 0
+  m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &519420032
@@ -385,7 +385,7 @@ MonoBehaviour:
   - {x: 0, y: 1}
   - {x: 0, y: -1}
   _chainLength: 5
-  _waveStepTime: 0.06
+  _waveStepTime: 0.1
   backgroundTransform: {fileID: 1266285459}
   backgroundSprite: {fileID: 1266285460}
 --- !u!1 &1120964687
@@ -565,8 +565,8 @@ MonoBehaviour:
   monoInstallers:
   - {fileID: 867918059}
   - {fileID: 874666583}
-  - {fileID: 794037626}
   - {fileID: 1120964689}
+  - {fileID: 794037626}
 --- !u!1 &1779067145
 GameObject:
   m_ObjectHideFlags: 0

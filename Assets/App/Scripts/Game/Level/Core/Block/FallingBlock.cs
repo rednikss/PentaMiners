@@ -3,7 +3,6 @@ using App.Scripts.Game.Level.Core.Block.Drop;
 using App.Scripts.Game.Level.Core.Grid;
 using App.Scripts.Game.Level.Core.Grid.Data;
 using JetBrains.Annotations;
-using UnityEngine;
 
 namespace App.Scripts.Game.Level.Core.Block
 {
@@ -31,8 +30,8 @@ namespace App.Scripts.Game.Level.Core.Block
             _curColumn = i;
             _block = fallingBlock;
         }
-
-        public void Move(Vector3 delta) => _block?.Move(delta);
+        
+        public BlockBase GetBlock() => _block;
         
         public void DashToColumn(int newColumn)
         {

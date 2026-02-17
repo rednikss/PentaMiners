@@ -9,6 +9,8 @@ namespace App.Scripts.UI.Panels.Pause.View
     {
         [field: SerializeField] public ActionButton resumeButton;
         
+        [field: SerializeField] public ActionButton restartButton;
+        
         public new void Construct(IPanelAnimator<RectTransform> animator)
         {
             base.Construct(animator);

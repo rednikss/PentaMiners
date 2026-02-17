@@ -1,5 +1,6 @@
 ﻿using App.Scripts.Game.Block.Types.Base;
 using App.Scripts.Libs.Patterns.ObjectPool;
+using DG.Tweening;
 using UnityEngine;
 
 namespace App.Scripts.Game.Block.Types.Default
@@ -18,11 +19,13 @@ namespace App.Scripts.Game.Block.Types.Default
 
         public void Construct(IObjectPool<ColorBlock> objectPool)
         {
+            base.Construct();
             _objectPool = objectPool;
         }
 
         public override void Return()
         {
+            base.Return();
             _objectPool.ReturnObject(this);
         }
 

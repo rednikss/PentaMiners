@@ -5,13 +5,13 @@ namespace App.Scripts.Libs.Services.Time.Tickable.Handler.Default
 {
     public class MonoTickableHandler : MonoBehaviour, ITickableHandler
     {
-        private readonly List<ITickable> _tickables = new();
+        private readonly HashSet<ITickable> _tickables = new();
         
         private void Update()
         {
-            for (var i = 0; i < _tickables.Count; i++)
+            foreach (var tickable in _tickables)
             {
-                _tickables[i].Tick(UnityEngine.Time.deltaTime);
+                tickable.Tick(UnityEngine.Time.deltaTime);
             }
         }
 

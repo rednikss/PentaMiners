@@ -1,9 +1,7 @@
 ﻿using System;
-using App.Scripts.Libs.Extensions.SerializeInterface;
 using App.Scripts.Libs.UI.Core.Panel.View;
 using App.Scripts.Libs.UI.Core.Panel.View.Config;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace App.Scripts.Libs.UI.Builder.Config
 {
@@ -12,11 +10,11 @@ namespace App.Scripts.Libs.UI.Builder.Config
     {
         [SerializeField] private PanelConfig[] panels;
 
-        public PanelConfig GetPanelConfig<T>() where T : Object, IPanelView
+        public PanelConfig GetPanelConfig<T>() where T : PanelView
         {
             foreach (var panel in panels)
             {
-                if (panel.View.Value is not T) continue;
+                if (panel.View is not T) continue;
                 
                 return panel;
             }
@@ -29,7 +27,7 @@ namespace App.Scripts.Libs.UI.Builder.Config
     [Serializable]
     public class PanelConfig
     {
-        [field: SerializeField] public Serialized<IPanelView> View;
+        [field: SerializeField] public PanelView View;
         
         [field: SerializeField] public PanelViewConfig Animator;
     }

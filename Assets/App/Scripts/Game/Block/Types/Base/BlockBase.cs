@@ -13,6 +13,23 @@ namespace App.Scripts.Game.Block.Types.Base
         
         [SerializeField] private Transform _transform;
 
+        private Tweener _dashXTweener;
+        
+        private Tweener _dashYTweener;
+
+        protected void Construct()
+        {
+            _dashXTweener = _transform.DOMoveX(0, _dashConfig.Duration)
+                .SetEase(_dashConfig.Ease)
+                .SetRecyclable(true)
+                .SetLink(gameObject);
+
+            _dashYTweener = _transform.DOMoveY(0, _dropConfig.Duration)
+                .SetEase(_dropConfig.Ease)
+                .SetRecyclable(true)
+                .SetLink(gameObject);
+        }
+        
         public void Move(Vector3 delta) => _transform.position += delta;
         
         public void SetScale(float scale) => _transform.localScale = scale * Vector3.one;
@@ -23,25 +40,21 @@ namespace App.Scripts.Game.Block.Types.Base
         
         public async UniTask DashToX(float x)
         {
-            await _transform.DOMoveX(x, _dashConfig.Duration)
-                .SetEase(_dashConfig.Ease)
-                .SetUpdate(UpdateType.Manual)
-                .SetLink(gameObject)
-                .Play()
-                .AsyncWaitForCompletion().AsUniTask();
+            _dashXTweener.ChangeValues(GetPosition(), new Vector3(x, 0, 0)).Restart();
+            await _dashXTweener.AwaitForComplete();
         }
         
         public async UniTask DashToY(float y)
         {
-            await _transform.DOMoveY(y, _dropConfig.Duration)
-                .SetEase(_dropConfig.Ease)
-                .SetUpdate(UpdateType.Manual)
-                .SetLink(gameObject)
-                .Play()
-                .AsyncWaitForCompletion().AsUniTask();
+            _dashYTweener.ChangeValues(GetPosition(), new Vector3(0, y, 0)).Restart();
+            await _dashYTweener.AwaitForComplete();
         }
 
-        public abstract void Return();
+        public virtual void Return()
+        {
+            _dashXTweener.Kill();
+            _dashYTweener.Kill();
+        }
         
         public abstract void OnDrop();
     }

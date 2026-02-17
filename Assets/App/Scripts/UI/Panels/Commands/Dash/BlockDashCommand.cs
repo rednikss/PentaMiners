@@ -4,7 +4,7 @@ using App.Scripts.Libs.Patterns.Command.Default;
 using App.Scripts.Libs.Services.Screen;
 using UnityEngine;
 
-namespace App.Scripts.UI.Panels.Game.Commands.Dash
+namespace App.Scripts.UI.Panels.Commands.Dash
 {
     public class BlockDashCommand : ICommand<Vector2>
     {

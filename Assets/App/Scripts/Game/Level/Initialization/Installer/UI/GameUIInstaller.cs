@@ -9,9 +9,9 @@ namespace App.Scripts.Game.Level.Initialization.Installer.UI
         public override void InstallBindings(ServiceContainer container)
         {
             var builder = container.GetService<IPanelBuilder>();
-            
             builder.BuildGamePanel();
             builder.BuildPausePanel();
+            builder.BuildLosePanel();
         }
     }
 }

@@ -7,7 +7,7 @@ using App.Scripts.Libs.UI.Core.Container;
 using App.Scripts.UI.Panels.Pause.View;
 using UnityEngine;
 
-namespace App.Scripts.UI.Panels.Game.Commands.Pause
+namespace App.Scripts.UI.Panels.Commands.Pause
 {
     public class PauseGameCommand : ICommandCancelable
     {
