@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be85e53d1a84d30a1092950293f2a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: /Level/PlayerData.txt
+  path: PlayerData.txt
 --- !u!114 &826316880807031574
 MonoBehaviour:
   m_ObjectHideFlags: 0
